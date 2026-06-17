@@ -43,26 +43,25 @@ const SITE = {
       platform: "tiktok",
       handle: "@marcelafarras",
       profileUrl: "https://www.tiktok.com/@marcelafarras",
-      description: "Sharing the unfiltered side of the digital world — industry insights and the tools shaping how we work and live online. Also urban lifestyle tips, tricks, and insider knowledge.",
+      description: "Covering the shifts reshaping social media and how AI is changing the way brands communicate — trend breakdowns, platform updates, and what it actually means for marketers.",
       // Paste a TikTok video URL to embed your best video
       // Example: "https://www.tiktok.com/@marcelafarras/video/1234567890123456789"
       // Leave as "" if not ready yet
       tiktokUrl: "",
     },
     {
-      platform: "youtube",
-      handle: "Marcel Farras",
-      profileUrl: "https://www.youtube.com/@marcelafarras",
-      description: "Short-form content mirroring @marcelafarras on TikTok — digital tips, lifestyle, and marketing insights.",
-      // Paste only the YouTube video ID (the part after ?v= or /embed/)
-      // Example: if the URL is youtube.com/watch?v=dQw4w9WgXcQ → paste "dQw4w9WgXcQ"
-      youtubeId: "",
+      platform: "threads",
+      handle: "@marcelafarras",
+      profileUrl: "https://www.threads.net/@marcelafarras",
+      description: "Practical takes on social media strategy and AI tools — what's working, what's not, and how to apply it. Less theory, more action.",
+      // Paste a Threads post URL to link to your best post
+      featuredPostUrl: "",
     },
     {
       platform: "linkedin",
       handle: "Marcel Agusta Farras",
       profileUrl: "https://www.linkedin.com/in/marcelafarras",
-      description: "Writing about career navigation and the digital industry — no sugarcoating, just real talk from someone 5+ years inside the system.",
+      description: "Writing about AI's role in modern marketing — how to build systems, not just content. For social media professionals who want to stay ahead of the curve.",
       // Paste a LinkedIn post URL to link to your best post
       featuredPostUrl: "",
     },

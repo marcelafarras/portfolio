@@ -14,12 +14,13 @@ function renderAiWorks() {
   const statusColor = { 'Live': '#22c55e', 'Done': '#22c55e', 'In Progress': '' };
 
   grid.innerHTML = SITE.aiWorks.map(item => {
+    const viewLink = `<a href="${item.iframeSrc || item.videoSrc || item.image || ''}" target="_blank" style="font-size:12px;font-weight:700;color:var(--yellow);display:block;margin-bottom:12px;">View Full Screen ↗</a>`;
     const media = item.iframeSrc
-      ? `<iframe src="${item.iframeSrc}" style="width:100%;height:220px;border:none;border-radius:8px;margin-bottom:16px;" scrolling="no"></iframe>`
+      ? `<iframe src="${item.iframeSrc}" style="width:100%;height:220px;border:none;border-radius:8px;margin-bottom:8px;" scrolling="no"></iframe>${viewLink}`
       : item.videoSrc
-      ? `<video src="${item.videoSrc}" style="width:100%;height:160px;object-fit:cover;border-radius:8px;margin-bottom:16px;" controls muted playsinline></video>`
+      ? `<video src="${item.videoSrc}" style="width:100%;height:160px;object-fit:cover;border-radius:8px;margin-bottom:8px;" controls muted playsinline></video>${viewLink}`
       : item.image
-      ? `<img src="${item.image}" alt="${item.title}" style="width:100%;height:160px;object-fit:cover;border-radius:8px;margin-bottom:16px;">`
+      ? `<img src="${item.image}" alt="${item.title}" style="width:100%;height:160px;object-fit:cover;border-radius:8px;margin-bottom:8px;">${viewLink}`
       : '';
     const linkBtn = item.link
       ? `<a href="${item.link}" target="_blank" style="font-size:13px;font-weight:700;color:var(--yellow);display:block;margin-top:12px;">View Work →</a>`
@@ -90,9 +91,10 @@ function renderPersonal() {
   if (!grid || !SITE.personal) return;
 
   const platformMeta = {
-    tiktok:   { label: 'TikTok',         color: '#1A1A1A', icon: '🎵' },
+    tiktok:   { label: 'TikTok',   color: '#1A1A1A', icon: '🎵' },
+    threads:  { label: 'Threads',  color: '#101010', icon: '🧵' },
+    linkedin: { label: 'LinkedIn', color: '#0A66C2', icon: '💼' },
     youtube:  { label: 'YouTube Shorts', color: '#FF0000', icon: '▶️' },
-    linkedin: { label: 'LinkedIn',       color: '#0A66C2', icon: '💼' },
   };
 
   grid.innerHTML = SITE.personal.map(item => {
