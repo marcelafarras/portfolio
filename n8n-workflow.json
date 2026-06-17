@@ -1,0 +1,107 @@
+{
+  "name": "Marcel Portfolio — Contact Form Handler",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "88e1a423-75f7-47b7-8a12-25aa7e2aa2cc",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "node-webhook",
+      "name": "Contact Form Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "88e1a423-75f7-47b7-8a12-25aa7e2aa2cc"
+    },
+    {
+      "parameters": {
+        "sendTo": "marcelafarras@gmail.com",
+        "subject": "=🔔 New Portfolio Inquiry: {{ $json.body.subject }}",
+        "emailType": "html",
+        "message": "=<h2>New message from your portfolio website</h2><table style='font-family:sans-serif;font-size:14px;border-collapse:collapse;width:100%'><tr><td style='padding:8px;font-weight:bold;border:1px solid #eee'>Name</td><td style='padding:8px;border:1px solid #eee'>{{ $json.body.name }}</td></tr><tr><td style='padding:8px;font-weight:bold;border:1px solid #eee'>Email</td><td style='padding:8px;border:1px solid #eee'>{{ $json.body.email }}</td></tr><tr><td style='padding:8px;font-weight:bold;border:1px solid #eee'>Subject</td><td style='padding:8px;border:1px solid #eee'>{{ $json.body.subject }}</td></tr><tr><td style='padding:8px;font-weight:bold;border:1px solid #eee'>Message</td><td style='padding:8px;border:1px solid #eee'>{{ $json.body.message }}</td></tr><tr><td style='padding:8px;font-weight:bold;border:1px solid #eee'>Sent at</td><td style='padding:8px;border:1px solid #eee'>{{ $json.body.timestamp }}</td></tr></table>",
+        "options": {}
+      },
+      "id": "node-gmail",
+      "name": "Send Gmail Notification",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [500, 160],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "REPLACE_WITH_YOUR_GMAIL_CREDENTIAL_ID",
+          "name": "Gmail — Marcel"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "mode": "id",
+          "value": "REPLACE_WITH_YOUR_GOOGLE_SHEET_ID"
+        },
+        "sheetName": {
+          "mode": "name",
+          "value": "Sheet1"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Timestamp": "={{ $('Contact Form Webhook').item.json.body.timestamp }}",
+            "Name": "={{ $('Contact Form Webhook').item.json.body.name }}",
+            "Email": "={{ $('Contact Form Webhook').item.json.body.email }}",
+            "Subject": "={{ $('Contact Form Webhook').item.json.body.subject }}",
+            "Message": "={{ $('Contact Form Webhook').item.json.body.message }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "node-gsheets",
+      "name": "Save to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [500, 440],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "REPLACE_WITH_YOUR_GSHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets — Marcel"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={ \"success\": true, \"message\": \"Thank you! Your message has been received.\" }",
+        "options": {}
+      },
+      "id": "node-respond",
+      "name": "Respond to Website",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [760, 300]
+    }
+  ],
+  "connections": {
+    "Contact Form Webhook": {
+      "main": [
+        [
+          { "node": "Send Gmail Notification", "type": "main", "index": 0 },
+          { "node": "Save to Google Sheets",   "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Send Gmail Notification": {
+      "main": [
+        [ { "node": "Respond to Website", "type": "main", "index": 0 } ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
