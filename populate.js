@@ -14,7 +14,11 @@ function renderAiWorks() {
   const statusColor = { 'Live': '#22c55e', 'Done': '#22c55e', 'In Progress': '' };
 
   grid.innerHTML = SITE.aiWorks.map(item => {
-    const media = item.image
+    const media = item.iframeSrc
+      ? `<iframe src="${item.iframeSrc}" style="width:100%;height:220px;border:none;border-radius:8px;margin-bottom:16px;" scrolling="no"></iframe>`
+      : item.videoSrc
+      ? `<video src="${item.videoSrc}" style="width:100%;height:160px;object-fit:cover;border-radius:8px;margin-bottom:16px;" controls muted playsinline></video>`
+      : item.image
       ? `<img src="${item.image}" alt="${item.title}" style="width:100%;height:160px;object-fit:cover;border-radius:8px;margin-bottom:16px;">`
       : '';
     const linkBtn = item.link

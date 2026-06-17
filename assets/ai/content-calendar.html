@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Content Calendar — Marcel Farras</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #222222;
+    --border: #2a2a2a;
+    --text: #f0f0f0;
+    --muted: #666;
+    --muted2: #444;
+
+    --li: #4A9EFF;
+    --li-bg: rgba(74,158,255,0.12);
+    --li-border: rgba(74,158,255,0.3);
+
+    --tt: #ff4d4d;
+    --tt-bg: rgba(255,77,77,0.12);
+    --tt-border: rgba(255,77,77,0.3);
+
+    --yt: #FF6B35;
+    --yt-bg: rgba(255,107,53,0.12);
+    --yt-border: rgba(255,107,53,0.3);
+
+    --th: #999999;
+    --th-bg: rgba(153,153,153,0.12);
+    --th-border: rgba(153,153,153,0.3);
+
+    --gold: #F5C518;
+    --gold-bg: rgba(245,197,24,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 32px 40px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .header-left h1 {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    color: var(--text);
+  }
+
+  .header-left p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .ai-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--gold-bg);
+    border: 1px solid rgba(245,197,24,0.25);
+    color: var(--gold);
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+  }
+
+  .ai-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* CONTROLS */
+  .controls {
+    padding: 16px 40px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .controls-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-right: 4px;
+  }
+
+  .filter-btn {
+    padding: 6px 14px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .filter-btn:hover { border-color: var(--muted2); color: var(--text); }
+  .filter-btn.active-all { border-color: var(--gold); color: var(--gold); background: var(--gold-bg); }
+  .filter-btn.active-li { border-color: var(--li-border); color: var(--li); background: var(--li-bg); }
+  .filter-btn.active-tt { border-color: var(--tt-border); color: var(--tt); background: var(--tt-bg); }
+  .filter-btn.active-yt { border-color: var(--yt-border); color: var(--yt); background: var(--yt-bg); }
+  .filter-btn.active-th { border-color: var(--th-border); color: var(--th); background: var(--th-bg); }
+
+  .month-nav {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .month-nav button {
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .month-nav button:hover { color: var(--text); border-color: var(--muted2); }
+
+  .month-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    min-width: 120px;
+    text-align: center;
+  }
+
+  /* PLATFORM LEGEND */
+  .legend {
+    padding: 10px 40px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  /* CALENDAR */
+  .calendar-wrap {
+    padding: 24px 40px;
+  }
+
+  .weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+
+  .weekday-label {
+    text-align: center;
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 8px 0;
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+
+  .day-cell {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    min-height: 110px;
+    padding: 8px;
+    position: relative;
+    transition: border-color 0.15s;
+  }
+
+  .day-cell:hover { border-color: var(--muted2); }
+
+  .day-cell.empty {
+    background: transparent;
+    border-color: transparent;
+  }
+
+  .day-cell.today {
+    border-color: var(--gold);
+  }
+
+  .day-number {
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .day-cell.today .day-number {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* CONTENT CARDS */
+  .content-card {
+    border-radius: 3px;
+    padding: 5px 7px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+    position: relative;
+  }
+
+  .content-card:hover {
+    opacity: 0.85;
+    transform: translateX(1px);
+  }
+
+  .content-card.li { background: var(--li-bg); border-left: 2px solid var(--li); }
+  .content-card.tt { background: var(--tt-bg); border-left: 2px solid var(--tt); }
+  .content-card.yt { background: var(--yt-bg); border-left: 2px solid var(--yt); }
+  .content-card.th { background: var(--th-bg); border-left: 2px solid var(--th); }
+
+  .card-platform {
+    font-size: 9px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 2px;
+  }
+
+  .li .card-platform { color: var(--li); }
+  .tt .card-platform { color: var(--tt); }
+  .yt .card-platform { color: var(--yt); }
+  .th .card-platform { color: var(--th); }
+
+  .card-title {
+    font-size: 10px;
+    color: var(--text);
+    line-height: 1.35;
+    font-weight: 400;
+  }
+
+  .content-card.hidden { display: none; }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    width: 100%;
+    max-width: 480px;
+    padding: 28px;
+    position: relative;
+    animation: slideIn 0.2s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-close:hover { color: var(--text); }
+
+  .modal-platform-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+
+  .modal-platform-tag.li { background: var(--li-bg); color: var(--li); border: 1px solid var(--li-border); }
+  .modal-platform-tag.tt { background: var(--tt-bg); color: var(--tt); border: 1px solid var(--tt-border); }
+  .modal-platform-tag.yt { background: var(--yt-bg); color: var(--yt); border: 1px solid var(--yt-border); }
+  .modal-platform-tag.th { background: var(--th-bg); color: var(--th); border: 1px solid var(--th-border); }
+
+  .modal-dot { width: 7px; height: 7px; border-radius: 50%; }
+  .li .modal-dot { background: var(--li); }
+  .tt .modal-dot { background: var(--tt); }
+  .yt .modal-dot { background: var(--yt); }
+  .th .modal-dot { background: var(--th); }
+
+  .modal h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.4;
+    margin-bottom: 16px;
+  }
+
+  .modal-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .meta-item {
+    background: var(--surface2);
+    border-radius: 5px;
+    padding: 10px 12px;
+  }
+
+  .meta-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 4px;
+  }
+
+  .meta-value {
+    font-size: 12px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .modal-hook {
+    background: var(--surface2);
+    border-radius: 5px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+  }
+
+  .modal-hook-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 6px;
+  }
+
+  .modal-hook-text {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  .modal-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .modal-tag {
+    font-size: 10px;
+    padding: 3px 8px;
+    background: var(--surface2);
+    border-radius: 3px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .status-badge.scheduled { background: rgba(74,158,255,0.1); color: var(--li); }
+  .status-badge.draft { background: rgba(245,197,24,0.1); color: var(--gold); }
+  .status-badge.live { background: rgba(74,222,128,0.1); color: #4ade80; }
+  .status-badge.idea { background: var(--surface2); color: var(--muted); }
+
+  /* FOOTER */
+  .footer {
+    padding: 16px 40px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .footer-note {
+    font-size: 10px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .footer-count {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .footer-count span {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* STATS ROW */
+  .stats-row {
+    padding: 12px 40px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .stat-num {
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text);
+  }
+
+  .stat-lbl {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .stat-item.li .stat-num { color: var(--li); }
+  .stat-item.tt .stat-num { color: var(--tt); }
+  .stat-item.yt .stat-num { color: var(--yt); }
+  .stat-item.th .stat-num { color: var(--th); }
+
+  @media (max-width: 768px) {
+    .header, .controls, .legend, .stats-row, .calendar-wrap, .footer { padding-left: 16px; padding-right: 16px; }
+    .day-cell { min-height: 80px; }
+    .card-title { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <h1>Content Calendar</h1>
+    <p>marcelfarras / personal-brand / content-system</p>
+    <div class="ai-badge">AI-generated · Updated daily</div>
+  </div>
+  <div style="text-align:right;">
+    <div style="font-size:11px; color:var(--muted); font-family:'JetBrains Mono',monospace; margin-bottom:4px;">Powered by</div>
+    <div style="font-size:13px; font-weight:600; color:var(--text);">Claude + Content Strategy</div>
+    <div style="font-size:10px; color:var(--muted); margin-top:2px;">Platform: LinkedIn · TikTok · YouTube Shorts · Threads</div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stat-item">
+    <span class="stat-num" id="total-count">0</span>
+    <span class="stat-lbl">Total Posts</span>
+  </div>
+  <div class="stat-item li">
+    <span class="stat-num" id="li-count">0</span>
+    <span class="stat-lbl">LinkedIn</span>
+  </div>
+  <div class="stat-item tt">
+    <span class="stat-num" id="tt-count">0</span>
+    <span class="stat-lbl">TikTok</span>
+  </div>
+  <div class="stat-item yt">
+    <span class="stat-num" id="yt-count">0</span>
+    <span class="stat-lbl">YT Shorts</span>
+  </div>
+  <div class="stat-item th">
+    <span class="stat-num" id="th-count">0</span>
+    <span class="stat-lbl">Threads</span>
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <span class="controls-label">Filter:</span>
+  <button class="filter-btn active-all" data-filter="all" onclick="setFilter('all', this)">All Platforms</button>
+  <button class="filter-btn" data-filter="li" onclick="setFilter('li', this)">LinkedIn</button>
+  <button class="filter-btn" data-filter="tt" onclick="setFilter('tt', this)">TikTok</button>
+  <button class="filter-btn" data-filter="yt" onclick="setFilter('yt', this)">YouTube Shorts</button>
+  <button class="filter-btn" data-filter="th" onclick="setFilter('th', this)">Threads</button>
+
+  <div class="month-nav">
+    <button onclick="prevMonth()">&#8249;</button>
+    <span class="month-label" id="month-label"></span>
+    <button onclick="nextMonth()">&#8250;</button>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--li)"></div> LinkedIn — Authority & professional storytelling</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--tt)"></div> TikTok — Reach & awareness</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--yt)"></div> YouTube Shorts — Educational clips</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--th)"></div> Threads — Casual community building</div>
+</div>
+
+<!-- CALENDAR -->
+<div class="calendar-wrap">
+  <div class="weekdays">
+    <div class="weekday-label">Sun</div>
+    <div class="weekday-label">Mon</div>
+    <div class="weekday-label">Tue</div>
+    <div class="weekday-label">Wed</div>
+    <div class="weekday-label">Thu</div>
+    <div class="weekday-label">Fri</div>
+    <div class="weekday-label">Sat</div>
+  </div>
+  <div class="calendar-grid" id="calendar-grid"></div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span class="footer-note">⚡ AI-powered · Auto-scheduled based on audience behavior & platform algorithms</span>
+  <span class="footer-count">Showing <span id="visible-count">0</span> posts this month</span>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-content">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-platform" class="modal-platform-tag li">
+      <div class="modal-dot"></div>
+      <span id="modal-platform-text">LinkedIn</span>
+    </div>
+    <h2 id="modal-title"></h2>
+    <div class="modal-meta">
+      <div class="meta-item">
+        <div class="meta-label">Date</div>
+        <div class="meta-value" id="modal-date"></div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Status</div>
+        <div class="meta-value" id="modal-status"></div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Content Type</div>
+        <div class="meta-value" id="modal-type"></div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Pillar</div>
+        <div class="meta-value" id="modal-pillar"></div>
+      </div>
+    </div>
+    <div class="modal-hook">
+      <div class="modal-hook-label">Hook / Opening Line</div>
+      <div class="modal-hook-text" id="modal-hook"></div>
+    </div>
+    <div class="modal-tags" id="modal-tags"></div>
+  </div>
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const contentData = [
+  // JUNE 2026
+  // Week 1
+  { date: '2026-06-01', platform: 'th', title: 'AI itu skill, bukan tools', type: 'Text Post', pillar: 'AI Fundamentals', status: 'live', hook: 'Banyak yang salah kaprah. AI itu bukan soal lo pakai tools apa — tapi lo bisa gali apa dari tools itu.' },
+  { date: '2026-06-02', platform: 'li', title: 'Gue SMM 5 tahun. Ini yang paling gue sesali soal AI.', type: 'Story Post', pillar: 'Industry Insight', status: 'live', hook: 'Gw SMM 5 tahun. Dan 1 hal yang paling gw sesali? Gw terlambat 2 tahun mulai pakai AI.' },
+  { date: '2026-06-03', platform: 'th', title: 'Prompting bukan magic — ini cara kerjanya', type: 'Text Post', pillar: 'AI Fundamentals', status: 'live', hook: 'Lo bisa pakai prompt yang sama persis sama orang lain dan dapet hasil yang beda. Ini kenapa.' },
+  { date: '2026-06-04', platform: 'tt', title: 'POV: Gue nulis caption 3 menit pakai AI', type: 'Video', pillar: 'Workflow Demo', status: 'live', hook: 'Timer on. Brief udah di tangan. Watch how this actually works.' },
+  { date: '2026-06-05', platform: 'th', title: 'Prompt jelek vs prompt bagus — side by side', type: 'Comparison', pillar: 'AI Fundamentals', status: 'live', hook: 'Ini prompt yang sama, dua cara nulis yang beda. Hasilnya beda banget.' },
+  { date: '2026-06-06', platform: 'yt', title: 'AI Workflow SMM: Setup Gue dari Nol', type: 'Shorts', pillar: 'Educational', status: 'scheduled', hook: 'Kalau gue harus mulai dari nol, ini yang gue build duluan.' },
+  { date: '2026-06-07', platform: 'li', title: '3 AI tools yang gue pakai setiap hari (bukan ChatGPT)', type: 'Listicle', pillar: 'Practical AI Workflow', status: 'live', hook: 'ChatGPT bukan satu-satunya. Ini tiga yang beneran ada di workflow gue tiap hari.' },
+
+  // Week 2
+  { date: '2026-06-08', platform: 'th', title: 'Gratis vs berbayar — mana yang worth?', type: 'Opinion Post', pillar: 'AI Fundamentals', status: 'live', hook: 'Lo gak butuh bayar untuk mulai. Tapi ada momen di mana gratis jadi bottleneck.' },
+  { date: '2026-06-09', platform: 'tt', title: '22K followers in 40 days — caranya gimana?', type: 'Video', pillar: 'Case Study', status: 'scheduled', hook: 'Client lo bisa grow segini kalau lo tau cara main algoritmanya.' },
+  { date: '2026-06-10', platform: 'th', title: 'AI dan toxic positivity — pengalaman gue', type: 'Personal Story', pillar: 'AI Fundamentals', status: 'scheduled', hook: 'Dulu gue juga di sini: "AI bakal solve semua masalah gue." Lalu realita datang.' },
+  { date: '2026-06-11', platform: 'li', title: 'Client gue 0 ke 22K dalam 40 hari', type: 'Case Study', pillar: 'Career Move & Leverage', status: 'live', hook: 'Bukan lucky. Bukan viral kebetulan. Ada sistemnya.' },
+  { date: '2026-06-12', platform: 'th', title: 'Stop ganti-ganti tools. Mastery dulu.', type: 'Opinion Post', pillar: 'AI Fundamentals', status: 'scheduled', hook: 'Gue pernah nyoba 12 tools dalam 3 bulan. Hasilnya? Output gue malah jelek.' },
+  { date: '2026-06-13', platform: 'yt', title: 'Caption Writing dengan AI — Full Demo', type: 'Shorts', pillar: 'Educational', status: 'draft', hook: 'Step by step, real brief, no cut.' },
+  { date: '2026-06-14', platform: 'li', title: 'Klien gak mau kontennya ketahuan pakai AI', type: 'Q&A Post', pillar: 'Industry Insight', status: 'scheduled', hook: 'Ini objeksi yang sering banget gue denger. Dan gue ngerti kenapa.' },
+
+  // Week 3
+  { date: '2026-06-15', platform: 'th', title: 'ChatGPT Series: Kenalan dulu sebelum minta-minta', type: 'Series Intro', pillar: 'ChatGPT Deep Dive', status: 'scheduled', hook: 'Minggu ini gue bahas ChatGPT dari yang paling dasar. Mulai dari: lo sebenernya ngomong ke apa?' },
+  { date: '2026-06-16', platform: 'tt', title: 'Remote work untuk klien UK — realitanya', type: 'Storytelling', pillar: 'Insider Story', status: 'scheduled', hook: 'Yang gak pernah diceritain orang soal kerja remote untuk klien luar.' },
+  { date: '2026-06-17', platform: 'th', title: 'ChatGPT: Cara pakai yang beneran works', type: 'Tutorial Post', pillar: 'ChatGPT Deep Dive', status: 'idea', hook: 'Bukan sekedar "ketik pertanyaan terus enter." Ada cara yang lebih tepat.' },
+  { date: '2026-06-18', platform: 'li', title: 'ChatGPT gak akan kasih output bagus sampai lo lakuin 1 hal ini', type: 'Curiosity Hook', pillar: 'Practical AI Workflow', status: 'scheduled', hook: 'Kebanyakan SMM yang coba AI dapat hasil yang sama: robotic, generic, gak ada brand voice-nya.' },
+  { date: '2026-06-19', platform: 'th', title: 'ChatGPT untuk SMM: 5 use case yang beneran gue pakai', type: 'Listicle', pillar: 'ChatGPT Deep Dive', status: 'idea', hook: 'Dari 20 yang gue coba, cuma 5 yang masuk workflow gue permanen.' },
+  { date: '2026-06-20', platform: 'yt', title: 'Prompt Engineering 101 untuk SMM', type: 'Shorts', pillar: 'Educational', status: 'idea', hook: 'Satu kebiasaan yang bikin prompt lo lebih powerful dari 90% orang.' },
+  { date: '2026-06-21', platform: 'tt', title: 'Day in the life: SMM yang pakai AI tiap hari', type: 'Day in Life', pillar: 'Lifestyle + Work', status: 'draft', hook: 'Dari bangun sampai submit konten — ini yang beneran terjadi.' },
+
+  // Week 4
+  { date: '2026-06-22', platform: 'th', title: 'ChatGPT untuk research konten — cara gue', type: 'Tutorial Post', pillar: 'ChatGPT Deep Dive', status: 'idea', hook: 'Gue bisa riset topik dalam 15 menit yang dulu butuh 2 jam. Ini setup-nya.' },
+  { date: '2026-06-23', platform: 'li', title: 'Kenapa gue switch dari ChatGPT ke Claude untuk nulis konten', type: 'Opinion Post', pillar: 'Industry Insight', status: 'live', hook: 'Bukan soal mana yang lebih pintar. Soal mana yang lebih nyambung sama cara kerja gue.' },
+  { date: '2026-06-24', platform: 'th', title: 'ChatGPT: batasan yang perlu lo tau', type: 'Honest Take', pillar: 'ChatGPT Deep Dive', status: 'idea', hook: 'Bukan bash session. Tapi ada hal-hal yang dia genuinely jelek dan lo perlu tau.' },
+  { date: '2026-06-25', platform: 'tt', title: '5 tahun di industri ini — yang paling gue pelajari', type: 'Refleksi', pillar: 'Career Insight', status: 'idea', hook: 'Bukan tips. Bukan tutorial. Cuma cerita jujur dari orang yang udah nginjakin jalan ini.' },
+  { date: '2026-06-26', platform: 'yt', title: 'Tools Stack Gue Sebagai SMM 2026', type: 'Shorts', pillar: 'Educational', status: 'idea', hook: 'Tools yang ada di desktop gue setiap hari. Bukan endorse — gue beneran pakai ini.' },
+  { date: '2026-06-28', platform: 'li', title: 'Bulan pertama jadi SMM remote untuk perusahaan UK', type: 'Personal Story', pillar: 'Orang Dalam Bicara', status: 'idea', hook: 'Culture shock yang gak ada yang ceritain sebelum gue masuk.' },
+  { date: '2026-06-30', platform: 'th', title: 'Recap June: apa yang gue pelajari bikin konten tiap hari', type: 'Monthly Recap', pillar: 'Creator Journey', status: 'idea', hook: 'Honest recap. Yang works, yang gagal, dan yang gue bakal ubah bulan depan.' },
+
+  // JULY 2026
+  { date: '2026-07-01', platform: 'li', title: 'Sistem konten gue dari nol — apa yang beneran gue pakai', type: 'Framework Post', pillar: 'Practical AI Workflow', status: 'idea', hook: 'Sebelum lo build sistem, lo harus tau kenapa sistem lo sebelumnya gagal.' },
+  { date: '2026-07-02', platform: 'tt', title: 'Cara gue batch konten 2 minggu dalam 1 hari', type: 'Tutorial Video', pillar: 'Workflow Demo', status: 'idea', hook: 'Bukan hack. Ini struktur. Dan lo bisa bikin yang sama.' },
+  { date: '2026-07-03', platform: 'th', title: 'AI sebagai sparring partner — bukan ghost writer', type: 'Philosophy Post', pillar: 'AI Philosophy', status: 'idea', hook: 'Yang bikin konten AI gue kerasa kayak gue: gue gak minta dia nulis. Gue minta dia mikir bareng.' },
+  { date: '2026-07-07', platform: 'li', title: 'KOL campaign 27M views — yang berjalan vs yang gak', type: 'Case Study', pillar: 'Orang Dalam Bicara', status: 'idea', hook: 'Dari 150+ KOL, hanya segelintir yang beneran drive result. Ini polanya.' },
+  { date: '2026-07-09', platform: 'tt', title: 'Brief yang jelek = konten yang jelek', type: 'Educational', pillar: 'SMM Tips', status: 'idea', hook: 'Lo bisa punya budget besar, tim kreatif keren — tapi kalau brief-nya jelek, semuanya sia-sia.' },
+  { date: '2026-07-10', platform: 'th', title: 'Kapan harus beli AI tools berbayar?', type: 'Decision Framework', pillar: 'AI Tools', status: 'idea', hook: 'Ada satu pertanyaan yang harus lo jawab dulu sebelum keluarin duit.' },
+  { date: '2026-07-14', platform: 'li', title: 'Apa yang berubah dari SMM tahun 2021 ke 2026', type: 'Industry Insight', pillar: 'Career Move & Leverage', status: 'idea', hook: 'Platform berubah. Algoritma berubah. Tapi satu hal yang gak berubah justru yang paling penting.' },
+];
+
+// ─── STATE ──────────────────────────────────────────────────────────────────
+let currentFilter = 'all';
+let currentYear = 2026;
+let currentMonth = 5; // 0-indexed, June
+
+const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const platformNames = { li: 'LinkedIn', tt: 'TikTok', yt: 'YouTube Shorts', th: 'Threads' };
+
+// ─── RENDER ─────────────────────────────────────────────────────────────────
+function renderCalendar() {
+  const grid = document.getElementById('calendar-grid');
+  grid.innerHTML = '';
+
+  const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const today = new Date();
+
+  document.getElementById('month-label').textContent = `${months[currentMonth]} ${currentYear}`;
+
+  // Empty cells
+  for (let i = 0; i < firstDay; i++) {
+    const empty = document.createElement('div');
+    empty.className = 'day-cell empty';
+    grid.appendChild(empty);
+  }
+
+  // Day cells
+  for (let d = 1; d <= daysInMonth; d++) {
+    const cell = document.createElement('div');
+    cell.className = 'day-cell';
+
+    const isToday = today.getFullYear() === currentYear && today.getMonth() === currentMonth && today.getDate() === d;
+    if (isToday) cell.classList.add('today');
+
+    const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dayPosts = contentData.filter(p => p.date === dateStr);
+
+    const dayNum = document.createElement('span');
+    dayNum.className = 'day-number';
+    dayNum.textContent = d;
+    cell.appendChild(dayNum);
+
+    dayPosts.forEach(post => {
+      const card = document.createElement('div');
+      card.className = `content-card ${post.platform}`;
+      if (currentFilter !== 'all' && currentFilter !== post.platform) card.classList.add('hidden');
+
+      card.innerHTML = `<div class="card-platform">${platformNames[post.platform]}</div><div class="card-title">${post.title}</div>`;
+      card.addEventListener('click', () => openModal(post, dateStr));
+      cell.appendChild(card);
+    });
+
+    grid.appendChild(cell);
+  }
+
+  updateCounts();
+}
+
+function updateCounts() {
+  const monthStr = `${currentYear}-${String(currentMonth + 1).padStart(2,'0')}`;
+  const monthPosts = contentData.filter(p => p.date.startsWith(monthStr));
+
+  document.getElementById('total-count').textContent = monthPosts.length;
+  document.getElementById('li-count').textContent = monthPosts.filter(p => p.platform === 'li').length;
+  document.getElementById('tt-count').textContent = monthPosts.filter(p => p.platform === 'tt').length;
+  document.getElementById('yt-count').textContent = monthPosts.filter(p => p.platform === 'yt').length;
+  document.getElementById('th-count').textContent = monthPosts.filter(p => p.platform === 'th').length;
+
+  const visible = currentFilter === 'all' ? monthPosts.length : monthPosts.filter(p => p.platform === currentFilter).length;
+  document.getElementById('visible-count').textContent = visible;
+}
+
+// ─── FILTER ─────────────────────────────────────────────────────────────────
+function setFilter(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.className = 'filter-btn';
+  });
+  btn.className = `filter-btn active-${filter}`;
+
+  document.querySelectorAll('.content-card').forEach(card => {
+    if (filter === 'all' || card.classList.contains(filter)) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+
+  updateCounts();
+}
+
+// ─── NAVIGATION ─────────────────────────────────────────────────────────────
+function prevMonth() {
+  if (currentMonth === 0) { currentMonth = 11; currentYear--; }
+  else currentMonth--;
+  renderCalendar();
+}
+
+function nextMonth() {
+  if (currentMonth === 11) { currentMonth = 0; currentYear++; }
+  else currentMonth++;
+  renderCalendar();
+}
+
+// ─── MODAL ──────────────────────────────────────────────────────────────────
+function openModal(post, dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  const formatted = d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+  const platformEl = document.getElementById('modal-platform');
+  platformEl.className = `modal-platform-tag ${post.platform}`;
+  document.getElementById('modal-platform-text').textContent = platformNames[post.platform];
+
+  document.getElementById('modal-title').textContent = post.title;
+  document.getElementById('modal-date').textContent = formatted;
+  document.getElementById('modal-type').textContent = post.type;
+  document.getElementById('modal-pillar').textContent = post.pillar;
+  document.getElementById('modal-hook').textContent = post.hook;
+
+  const statusEl = document.getElementById('modal-status');
+  const statusMap = { live: ['live', '● Live'], scheduled: ['scheduled', '◷ Scheduled'], draft: ['draft', '◎ Draft'], idea: ['idea', '○ Idea'] };
+  const [cls, label] = statusMap[post.status] || ['idea', '○ Idea'];
+  statusEl.innerHTML = `<span class="status-badge ${cls}">${label}</span>`;
+
+  const tagsEl = document.getElementById('modal-tags');
+  const tags = [post.pillar, post.type, platformNames[post.platform]];
+  tagsEl.innerHTML = tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
+
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modal-overlay') || e.currentTarget.tagName === 'BUTTON') {
+    document.getElementById('modal-overlay').classList.remove('open');
+  }
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal({ target: document.getElementById('modal-overlay') }); });
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+renderCalendar();
+</script>
+</body>
+</html>
