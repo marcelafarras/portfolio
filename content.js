@@ -44,9 +44,7 @@ const SITE = {
       handle: "@marcelafarras",
       profileUrl: "https://www.tiktok.com/@marcelafarras",
       description: "Covering the shifts reshaping social media and how AI is changing the way brands communicate — trend breakdowns, platform updates, and what it actually means for marketers.",
-      // Paste a TikTok video URL to embed your best video
-      // Example: "https://www.tiktok.com/@marcelafarras/video/1234567890123456789"
-      // Leave as "" if not ready yet
+      localVideo: "assets/personal/tiktok-post.mp4",
       tiktokUrl: "",
     },
     {
@@ -54,7 +52,7 @@ const SITE = {
       handle: "@marcelafarras",
       profileUrl: "https://www.threads.net/@marcelafarras",
       description: "Practical takes on social media strategy and AI tools — what's working, what's not, and how to apply it. Less theory, more action.",
-      // Paste a Threads post URL to link to your best post
+      postImage: "assets/personal/threads-post.png",
       featuredPostUrl: "",
     },
     {
@@ -62,7 +60,7 @@ const SITE = {
       handle: "Marcel Agusta Farras",
       profileUrl: "https://www.linkedin.com/in/marcelafarras",
       description: "Writing about AI's role in modern marketing — how to build systems, not just content. For social media professionals who want to stay ahead of the curve.",
-      // Paste a LinkedIn post URL to link to your best post
+      localVideo: "assets/personal/linkedin-post.MOV",
       featuredPostUrl: "",
     },
   ],
@@ -147,7 +145,7 @@ const SITE = {
       brand: "Thamrin Nine",
       title: "17M+ Views on a Single Content",
       description: "Revamped social media strategy for Jakarta's most iconic superblock, including a viral Red Bull collaboration that hit 17M+ views.",
-      image: "assets/works/thamrinnine.JPG",
+      image: "assets/works/thamrinnine.jpg",
       youtubeId: "",
       metrics: [
         { number: "17M+",  label: "views (1 content)" },
@@ -170,7 +168,7 @@ const SITE = {
       brand: "Le Parc Luxury Residence",
       title: "Luxury Brand Tone of Voice — Lifestyle-Driven Content Strategy",
       description: "Defined and executed a luxury brand's digital identity, translating architectural sophistication into aspirational yet relatable social content.",
-      image: "assets/works/leparc.webp",
+      image: "assets/works/leparc.jpg",
       youtubeId: "",
       metrics: [
         { number: "207K+", label: "views top feed content" },
@@ -180,7 +178,7 @@ const SITE = {
       brand: "Thamrin Nine Ballroom",
       title: "255+ Leads Worth IDR 1.5B — Wedding & MICE Venue",
       description: "Supported lead generation for a premier wedding and MICE venue, driving 255+ qualified leads directly attributable to social media activation.",
-      image: "assets/works/ballroom.png",
+      image: "assets/works/ballroom.jpg",
       youtubeId: "",
       metrics: [
         { number: "255+",     label: "qualified leads" },

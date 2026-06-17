@@ -118,6 +118,11 @@ function renderPersonal() {
 }
 
 function buildPersonalEmbed(item) {
+  if (item.localVideo) {
+    return `<div style="margin-bottom:16px;border-radius:8px;overflow:hidden;">
+      <video src="${item.localVideo}" style="width:100%;border-radius:8px;display:block;" controls muted playsinline></video>
+    </div>`;
+  }
   if (item.youtubeId) {
     return `<div style="margin-bottom:16px;border-radius:8px;overflow:hidden;">
       <iframe src="https://www.youtube.com/embed/${item.youtubeId}"
@@ -136,12 +141,18 @@ function buildPersonalEmbed(item) {
       </div>`;
     }
   }
+  if (item.postImage) {
+    const link = item.featuredPostUrl || '#';
+    return `<div style="margin-bottom:16px;border-radius:8px;overflow:hidden;">
+      <a href="${link}" target="_blank">
+        <img src="${item.postImage}" alt="Featured post" style="width:100%;border-radius:8px;display:block;transition:opacity 0.2s;" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">
+      </a>
+    </div>`;
+  }
   if (item.featuredPostUrl) {
     return `<div class="personal-placeholder" style="margin-bottom:16px;">
       <a href="${item.featuredPostUrl}" target="_blank" style="font-size:13px;color:var(--yellow);font-weight:600;">View Featured Post →</a>
     </div>`;
   }
-  return `<div class="personal-placeholder" style="margin-bottom:16px;">
-    <span>Add video URL in content.js to embed here</span>
-  </div>`;
+  return '';
 }
