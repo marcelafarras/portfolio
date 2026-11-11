@@ -31,7 +31,9 @@ The current sample gallery uses existing repository assets. No new UGC demo, cus
 
 Run `python3 -m http.server 4173 --bind 127.0.0.1`, then open `http://127.0.0.1:4173/`.
 
-No build step or package installation is required. Fonts are loaded from Google Fonts, with system fallbacks.
+No build step or package installation is required. Poppins is loaded from Google Fonts, with system fallbacks. Body copy and form inputs use at least 16px; secondary labels use 12px or larger.
+
+`assets/brand/` contains Marcel’s supplied MF logos with transparent outer padding trimmed for layout, plus tab icons derived from the black logo on the brand yellow. The white logo is used on dark backgrounds; the gold and black variants are available for other placements.
 
 ## Contact form
 
