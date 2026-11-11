@@ -16,14 +16,16 @@ The main gallery uses `SITE.samples` in `content.js`. Add a sample only when its
 - `id`, `title`, `category` and `services` (one or more of `social`, `ai`, `production`, `events`)
 - `description` and `demonstrates`
 - `origin`: an accurate label such as Personal content, Self-initiated concept or Client work
-- `image` with `imageAlt`, or `videoSrc` with `poster`
+- `image` with `imageAlt`, or `videoSrc` with `poster` and an optional lightweight `previewSrc`
 - `linkLabel`
 
 Keep commissioned work distinct from self-initiated examples. Verify production credits and results before adding them. A brand logo or location photograph is not evidence of an authored content deliverable.
 
+The black-and-yellow interface leads with client needs, a silent video preview, output samples, and expandable service descriptions. Automatic previews respect reduced-motion and save-data preferences; visitors can pause motion.
+
 The current sample gallery uses existing repository assets. No new UGC demo, customer testimonial, photography shoot or event sample was created for this revision. The Event Support filter has an explicit empty state until real samples are supplied. Existing location photographs and unused media are retained in `assets/`.
 
-`assets/covers/` contains simple vector title cards for the video players, not frames from the videos.
+`assets/posters/` contains frames extracted from the existing videos. `assets/previews/` contains short, silent, compressed extracts for previews. Full playback uses the original files. The older vector title cards in `assets/covers/` are retained but no longer used. The personal TikTok clip is labelled as a retail explainer, not an on-camera testimonial.
 
 ## Preview
 
