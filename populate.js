@@ -2,31 +2,44 @@
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 const safeUrl = value => /^(https:\/\/|assets\/)/.test(String(value || '')) ? escapeHtml(value) : '';
 const externalLink = (url, label, cls = 'text-link') => `<a class="${cls}" href="${safeUrl(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)} <span aria-hidden="true">↗</span></a>`;
+const workState = { service: 'all', format: 'all' };
+const sampleFormat = item => item.format || (item.videoSrc ? 'video' : 'image');
 
-function renderSamples(filter = 'all') {
-  // A filtered-out player must stop before its element is removed.
+function renderSamples(service = workState.service, format = workState.format) {
+  workState.service = service;
+  workState.format = format;
   document.querySelectorAll('#works-grid video').forEach(video => video.pause());
-  const items = SITE.samples.filter(item => filter === 'all' || item.services.includes(filter));
-  document.getElementById('works-grid').innerHTML = items.map((item, index) => `
-    <article class="sample-card ${item.videoSrc ? 'has-video' : ''}">
+  const serviceItems = SITE.samples.filter(item => service === 'all' || item.services.includes(service));
+  const items = serviceItems.filter(item => format === 'all' || sampleFormat(item) === format);
+  document.getElementById('works-grid').dataset.count = String(items.length);
+  document.getElementById('works-grid').innerHTML = items.map(item => `
+    <article class="sample-card preview-card ${item.videoSrc ? 'has-video' : ''}">
       <div class="sample-media">
         <button class="media-open" type="button" data-project="${escapeHtml(item.id)}" ${item.videoSrc ? 'data-start-playback="true"' : ''} aria-label="${item.videoSrc ? 'Watch' : 'View'} ${escapeHtml(item.title)}">
           ${item.videoSrc
             ? `<img class="media-backdrop" src="${safeUrl(item.poster)}" alt="" aria-hidden="true"><video data-hover-preview src="${safeUrl(item.previewSrc || item.videoSrc)}" poster="${safeUrl(item.poster)}" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>`
             : `<img class="contain" src="${safeUrl(item.image)}" alt="${escapeHtml(item.imageAlt)}" loading="lazy" decoding="async">`}
-          <span class="media-action">${item.videoSrc ? 'Play video' : 'View sample'} <span aria-hidden="true">↗</span></span>
-          <span class="sample-count" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span>
+          <span class="media-action">${item.videoSrc ? '▷ Play video' : '↗ View sample'}</span>
+          <span class="sample-format">${item.videoSrc ? 'Video' : sampleFormat(item) === 'workflow' ? 'Workflow' : 'Image'}</span>
         </button>
       </div>
       <div class="sample-info">
-        <div class="sample-info-top"><p class="project-category">${escapeHtml(item.category)}</p><span class="sample-origin">${escapeHtml(item.origin)}</span></div>
-        <h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.description)}</p>
-        <button class="project-button" type="button" data-project="${escapeHtml(item.id)}" aria-label="Details for ${escapeHtml(item.title)}">The idea & output <span aria-hidden="true">↗</span></button>
+        <p class="project-category">${escapeHtml(item.category)}</p>
+        <h3><button class="project-title" type="button" data-project="${escapeHtml(item.id)}" aria-label="Details for ${escapeHtml(item.title)}">${escapeHtml(item.title)} <span aria-hidden="true">↗</span></button></h3>
+        <p>${escapeHtml(item.description)}</p><span class="sample-origin">${escapeHtml(item.origin)}</span>
       </div>
     </article>`).join('');
   document.getElementById('emptyWork').hidden = items.length > 0;
-  document.getElementById('workResults').textContent = `${items.length} ${items.length === 1 ? 'sample' : 'samples'} shown.`;
-  document.querySelectorAll('[data-filter]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === filter)));
+  document.getElementById('emptyWorkTitle').textContent = service === 'events' ? "Let's start with your event." : 'A different format. A new possibility.';
+  document.getElementById('emptyWorkDescription').textContent = service === 'events'
+    ? 'No event samples are published here yet. Tell me about your event and the support you need.'
+    : 'No samples match this format and service yet. Explore all the work, or tell me what you have in mind.';
+  document.getElementById('workResults').textContent = `${items.length} ${items.length === 1 ? 'sample' : 'samples'}`;
+  document.querySelectorAll('[data-filter]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === service)));
+  document.querySelectorAll('[data-format]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.format === format)));
+  document.querySelectorAll('[data-format-count]').forEach(count => {
+    count.textContent = serviceItems.filter(item => count.dataset.formatCount === 'all' || sampleFormat(item) === count.dataset.formatCount).length;
+  });
   document.dispatchEvent(new CustomEvent('samplesrendered'));
 }
 
@@ -35,4 +48,10 @@ document.getElementById('workFilters').addEventListener('click', event => {
   const button = event.target.closest('[data-filter]');
   if (button) renderSamples(button.dataset.filter);
 });
-document.querySelectorAll('[data-service-filter]').forEach(link => link.addEventListener('click', () => renderSamples(link.dataset.serviceFilter)));
+document.getElementById('formatFilters').addEventListener('click', event => {
+  const button = event.target.closest('[data-format]');
+  if (button) renderSamples(workState.service, button.dataset.format);
+});
+document.querySelectorAll('[data-service-filter]').forEach(link => link.addEventListener('click', () => renderSamples(link.dataset.serviceFilter, 'all')));
+document.querySelectorAll('[data-format-link]').forEach(link => link.addEventListener('click', () => renderSamples('all', link.dataset.formatLink)));
+document.getElementById('resetWork').addEventListener('click', () => renderSamples('all', 'all'));

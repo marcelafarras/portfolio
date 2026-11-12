@@ -1,22 +1,50 @@
-// Navigation and the service shortcuts.
+// Navigation uses disclosures, with the same links available on touch and keyboard.
 const navToggle = document.getElementById('navToggle');
 const navLinks = document.getElementById('navLinks');
+const menuButtons = [...document.querySelectorAll('.nav-menu-button')];
+function closePanels(except) {
+  menuButtons.forEach(button => {
+    if (button === except) return;
+    button.setAttribute('aria-expanded', 'false');
+    document.getElementById(button.getAttribute('aria-controls')).hidden = true;
+  });
+}
 function closeMenu() {
   navLinks.classList.remove('open');
   navToggle.setAttribute('aria-expanded', 'false');
+  closePanels();
 }
 navToggle.addEventListener('click', () => {
   const open = navToggle.getAttribute('aria-expanded') !== 'true';
   navToggle.setAttribute('aria-expanded', String(open));
   navLinks.classList.toggle('open', open);
+  if (!open) closePanels();
 });
+menuButtons.forEach(button => button.addEventListener('click', () => {
+  const open = button.getAttribute('aria-expanded') !== 'true';
+  closePanels(button);
+  button.setAttribute('aria-expanded', String(open));
+  document.getElementById(button.getAttribute('aria-controls')).hidden = !open;
+}));
 navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+document.addEventListener('click', event => {
+  if (!document.getElementById('navbar').contains(event.target)) closeMenu();
+});
+document.addEventListener('focusin', event => {
+  if (!document.getElementById('navbar').contains(event.target)) closePanels();
+});
 document.addEventListener('keydown', event => {
-  if (event.key === 'Escape') closeMenu();
+  if (event.key !== 'Escape') return;
+  const expanded = menuButtons.find(button => button.getAttribute('aria-expanded') === 'true');
+  if (expanded) {
+    closePanels();
+    expanded.focus();
+  } else if (navToggle.getAttribute('aria-expanded') === 'true') {
+    closeMenu();
+    navToggle.focus();
+  }
 });
-window.matchMedia('(min-width: 761px)').addEventListener('change', event => {
-  if (event.matches) closeMenu();
-});
+window.matchMedia('(min-width: 901px)').addEventListener('change', closeMenu);
 document.getElementById('year').textContent = new Date().getFullYear();
 
 document.querySelectorAll('[data-open-service]').forEach(link => link.addEventListener('click', () => {
@@ -53,53 +81,34 @@ const dialog = document.getElementById('projectDialog');
 const dialogContent = document.getElementById('projectDialogContent');
 let motionEnabled = !reducedMotion.matches && !saveData;
 let heroVisible = false;
-let heroManuallyPaused = false;
-let heroUserRequested = false;
 let sampleObserver;
 
-function updateHeroButton() {
-  heroPlayback.textContent = heroVideo.paused ? 'Play preview' : 'Pause preview';
-  heroPlayback.setAttribute('aria-label', heroVideo.paused ? 'Play silent preview' : 'Pause silent preview');
-}
 function syncHero() {
-  const canPlay = (motionEnabled || heroUserRequested) && heroVisible && !heroManuallyPaused && !document.hidden && !dialog.open;
+  const canPlay = motionEnabled && heroVisible && !document.hidden && !dialog.open;
   if (canPlay) {
     heroVideo.muted = true;
-    heroVideo.play().catch(updateHeroButton);
+    heroVideo.play().catch(() => {});
   } else {
     heroVideo.pause();
   }
-  updateHeroButton();
 }
 function syncMotion() {
   document.body.classList.toggle('motion-paused', !motionEnabled);
   motionToggle.setAttribute('aria-pressed', String(!motionEnabled));
   motionToggle.textContent = motionEnabled ? 'Pause motion' : 'Enable motion';
+  heroPlayback.textContent = motionEnabled ? 'Pause previews' : 'Enable previews';
+  heroPlayback.setAttribute('aria-label', motionEnabled ? 'Pause automatic previews' : 'Enable automatic previews');
+  heroPlayback.setAttribute('aria-pressed', String(!motionEnabled));
   if (!motionEnabled) document.querySelectorAll('[data-hover-preview]').forEach(video => video.pause());
   syncHero();
 }
-heroVideo.addEventListener('play', updateHeroButton);
-heroVideo.addEventListener('pause', updateHeroButton);
-heroVideo.addEventListener('error', updateHeroButton);
-heroPlayback.addEventListener('click', () => {
-  if (heroVideo.paused) {
-    heroUserRequested = true;
-    heroManuallyPaused = false;
-  } else {
-    heroUserRequested = false;
-    heroManuallyPaused = true;
-  }
-  syncHero();
-});
+heroPlayback.addEventListener('click', () => motionToggle.click());
 motionToggle.addEventListener('click', () => {
   motionEnabled = !motionEnabled;
-  heroUserRequested = false;
-  heroManuallyPaused = false;
   syncMotion();
 });
 reducedMotion.addEventListener('change', event => {
   motionEnabled = !event.matches && !saveData;
-  heroUserRequested = false;
   syncMotion();
 });
 document.addEventListener('visibilitychange', () => {
@@ -124,10 +133,12 @@ function setupSamplePreviews() {
       if (!entry.isIntersecting) entry.target.pause();
     }), { threshold: 0.1 });
   }
-  document.querySelectorAll('.sample-card').forEach(card => {
+  document.querySelectorAll('.preview-card').forEach(card => {
     const video = card.querySelector('[data-hover-preview]');
     if (!video) return;
     if (sampleObserver) sampleObserver.observe(video);
+    if (card.dataset.previewBound) return;
+    card.dataset.previewBound = 'true';
     const start = () => {
       if (!motionEnabled || !finePointer.matches || document.hidden || dialog.open) return;
       video.muted = true;
@@ -144,6 +155,24 @@ function setupSamplePreviews() {
 }
 document.addEventListener('samplesrendered', setupSamplePreviews);
 setupSamplePreviews();
+
+// The featured rail never advances automatically.
+const featuredTrack = document.getElementById('featuredTrack');
+const railButtons = [...document.querySelectorAll('[data-rail-direction]')];
+function updateRailButtons() {
+  railButtons.forEach(button => {
+    button.disabled = Number(button.dataset.railDirection) < 0
+      ? featuredTrack.scrollLeft < 2
+      : featuredTrack.scrollLeft + featuredTrack.clientWidth >= featuredTrack.scrollWidth - 2;
+  });
+}
+railButtons.forEach(button => button.addEventListener('click', () => {
+  const card = featuredTrack.querySelector('.feature-card');
+  featuredTrack.scrollBy({ left: Number(button.dataset.railDirection) * (card.getBoundingClientRect().width + 18), behavior: motionEnabled ? 'smooth' : 'instant' });
+}));
+featuredTrack.addEventListener('scroll', updateRailButtons, { passive: true });
+window.addEventListener('resize', updateRailButtons);
+updateRailButtons();
 
 // Content stays visible if motion is disabled or this enhancement is unsupported.
 if ('IntersectionObserver' in window && motionEnabled) {

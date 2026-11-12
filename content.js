@@ -27,7 +27,7 @@ const SITE = {
       linkLabel: 'Open full video'
     },
     {
-      id: 'workflow', title: 'Connect the steps behind the content',
+      id: 'workflow', format: 'workflow', title: 'Connect the steps behind the content',
       category: 'AI Content & Workflows', services: ['ai'],
       description: 'An n8n workflow example connecting research and content delivery.',
       demonstrates: 'Workflow structure and connected production steps.',

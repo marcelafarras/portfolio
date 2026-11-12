@@ -19,9 +19,11 @@ The main gallery uses `SITE.samples` in `content.js`. Add a sample only when its
 - `image` with `imageAlt`, or `videoSrc` with `poster` and an optional lightweight `previewSrc`
 - `linkLabel`
 
-Keep commissioned work distinct from self-initiated examples. Verify production credits and results before adding them. A brand logo or location photograph is not evidence of an authored content deliverable.
+Keep commissioned work distinct from self-initiated examples. Verify production credits and results before adding them. A brand logo or location photograph is not evidence of an authored content deliverable. Image examples in the current gallery are creative and workflow assets, not newly commissioned photo shoots.
 
-The black-and-yellow interface leads with client needs, a silent video preview, output samples, and expandable service descriptions. Automatic previews respect reduced-motion and save-data preferences; visitors can pause motion.
+The black-and-yellow interface leads with client needs, a horizontal featured-work rail, output samples, and expandable service descriptions. The compact navigation uses Work and Services disclosure panels, with the same links available on mobile and keyboard.
+
+The gallery combines format (video, images/design, workflows) and service filters, shows format counts within the selected service, and provides a reset when no samples match. Set a sample’s `format` to `workflow` for workflow diagrams; videos and other images are detected automatically. The featured rail scrolls by swipe, keyboard or arrow controls and never advances automatically. The preview button and footer motion button control all automatic previews. Automatic previews respect reduced-motion and save-data preferences; visitors can pause motion.
 
 The current sample gallery uses existing repository assets. No new UGC demo, customer testimonial, photography shoot or event sample was created for this revision. The Event Support filter has an explicit empty state until real samples are supplied. Existing location photographs and unused media are retained in `assets/`.
 
