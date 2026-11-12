@@ -8,103 +8,103 @@ const SITE = {
     {
         "id": "utbk-masukkampus",
         "name": "utbk.masukkampus",
-        "group": "MasukKampus",
+        "group": "PT. Inspirasi MasukKampus",
         "logo": "assets/clients/utbk-masukkampus.png"
     },
     {
         "id": "simakui-masukkampus",
         "name": "simakui.masukkampus",
-        "group": "MasukKampus",
+        "group": "PT. Inspirasi MasukKampus",
         "logo": "assets/clients/simakui-masukkampus.png"
     },
     {
         "id": "masuk-kedinasan",
         "name": "masuk.kedinasan",
-        "group": "MasukKampus",
+        "group": "PT. Inspirasi MasukKampus",
         "logo": "assets/clients/masuk-kedinasan.png"
     },
     {
         "id": "bintaro-jaya",
         "name": "Bintaro Jaya",
-        "group": "Jaya Real Property",
+        "group": "PT. Jaya Real Property, Tbk.",
         "logo": "assets/clients/bintaro-jaya.svg"
     },
     {
         "id": "graha-raya",
         "name": "Graha Raya",
-        "group": "Jaya Real Property",
+        "group": "PT. Jaya Real Property, Tbk.",
         "logo": "assets/clients/graha-raya.svg"
     },
     {
         "id": "puri-jaya",
         "name": "Puri Jaya",
-        "group": "Jaya Real Property",
+        "group": "PT. Jaya Real Property, Tbk.",
         "logo": "assets/clients/puri-jaya.svg"
     },
     {
         "id": "jaya-imperial-park",
         "name": "Jaya Imperial Park",
-        "group": "Jaya Real Property",
+        "group": "PT. Jaya Real Property, Tbk.",
         "logo": "assets/clients/jaya-imperial-park.svg"
     },
     {
         "id": "serpong-jaya",
         "name": "Serpong Jaya",
-        "group": "Jaya Real Property",
+        "group": "PT. Jaya Real Property, Tbk.",
         "logo": "assets/clients/serpong-jaya.svg"
     },
     {
         "id": "emerald-apartemen-bintaro",
         "name": "Emerald Apartemen Bintaro",
-        "group": "Jaya Real Property",
+        "group": "PT. Jaya Real Property, Tbk.",
         "logo": "assets/clients/emerald-apartemen-bintaro.svg"
     },
     {
         "id": "bintaro-plaza-residence",
         "name": "Bintaro Plaza Residence",
-        "group": "Jaya Real Property",
+        "group": "PT. Jaya Real Property, Tbk.",
         "logo": "assets/clients/bintaro-plaza-residence.svg"
     },
     {
         "id": "silk-town",
         "name": "Silk Town",
-        "group": "Jaya Real Property",
+        "group": "PT. Jaya Real Property, Tbk.",
         "logo": "assets/clients/silk-town.svg"
     },
     {
         "id": "thamrin-nine",
         "name": "Thamrin Nine",
-        "group": "Thamrin Nine",
+        "group": "PT. Putragaya Wahana",
         "logo": "assets/clients/thamrin-nine.svg"
     },
     {
         "id": "le-parc-luxury-residence",
         "name": "Le Parc Luxury Residence",
-        "group": "Thamrin Nine",
+        "group": "PT. Putragaya Wahana",
         "logo": "assets/clients/le-parc-luxury-residence.svg"
     },
     {
         "id": "agora-mall",
         "name": "Agora Mall",
-        "group": "Thamrin Nine",
+        "group": "PT. Putragaya Wahana",
         "logo": "assets/clients/agora-mall.svg"
     },
     {
         "id": "up-at-thamrin-nine",
         "name": "UP at Thamrin Nine",
-        "group": "Thamrin Nine",
+        "group": "PT. Putragaya Wahana",
         "logo": "assets/clients/up-at-thamrin-nine.svg"
     },
     {
         "id": "thamrin-nine-ballroom",
         "name": "Thamrin Nine Ballroom",
-        "group": "Thamrin Nine",
+        "group": "PT. Putragaya Wahana",
         "logo": "assets/clients/thamrin-nine-ballroom.svg"
     },
     {
         "id": "chubb-square",
         "name": "Chubb Square",
-        "group": "Thamrin Nine",
+        "group": "PT. Putragaya Wahana",
         "logo": "assets/clients/chubb-square.svg"
     },
     {
