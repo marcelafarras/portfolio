@@ -61,12 +61,12 @@ document.querySelectorAll('[data-service-filter]').forEach(link => link.addEvent
 document.querySelectorAll('[data-format-link]').forEach(link => link.addEventListener('click', () => renderSamples('all', link.dataset.formatLink)));
 document.getElementById('resetWork').addEventListener('click', () => renderSamples('all', 'all'));
 
-// Use supplied names until reviewed original logo files are available.
+// Reviewed logos fall back to the supplied name if an asset is unavailable.
 function renderBrands() {
   const track = document.getElementById('brandTrack');
   const items = (SITE.brands || []).map(brand => {
     const logoUrl = safeUrl(brand.logo);
-    return `<li class="brand-item">${logoUrl ? `<img class="brand-logo" src="${logoUrl}" alt="${escapeHtml(brand.name)}" width="168" height="56" loading="lazy" decoding="async">` : `<span class="brand-name">${escapeHtml(brand.name)}</span>`}<span class="brand-group">${escapeHtml(brand.group)}</span></li>`;
+    return `<li class="brand-item">${logoUrl ? `<img class="brand-logo" src="${logoUrl}" alt="${escapeHtml(brand.name)}" width="168" height="56" loading="eager" decoding="async">` : `<span class="brand-name">${escapeHtml(brand.name)}</span>`}<span class="brand-group">${escapeHtml(brand.group)}</span></li>`;
   }).join('');
   track.innerHTML = `<ul class="brand-list" aria-label="Brands and projects">${items}</ul><ul class="brand-list" aria-hidden="true">${items}</ul>`;
   // A missing future logo still leaves its brand readable.

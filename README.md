@@ -38,11 +38,11 @@ After reviewing incoming work, copy only selected web-ready assets into `assets/
 
 ## Brand experience strip
 
-`SITE.brands` lists the 20 brand/project names supplied by Marcel, grouped under MasukKampus, Jaya Real Property, Thamrin Nine and Azure Prism LTD. “Brands I've worked with” describes professional brand experience, not direct freelance-client status. Names are displayed until original logo assets are supplied. Set each `logo` to a reviewed `assets/clients/...` path to replace that name with the actual logo. Preserve legibility and original proportions; a failed logo falls back to its name.
+`SITE.brands` lists the 19 approved brand names supplied by Marcel, grouped under MasukKampus, Jaya Real Property, Thamrin Nine and Azure Prism LTD. “Brands I've worked with” describes professional brand experience, not direct freelance-client status. The reviewed colour/white display variants are now wired from `assets/clients/`. Source and treatment notes are in that directory’s README. Set each `logo` to a reviewed `assets/clients/...` path to replace that name with the actual logo. Preserve legibility and original proportions; a failed logo falls back to its name.
 
-Logo intake folders are in `Portfolio Uploads/06 - Brand Logos` outside this repository. Group logos can be placed at group-folder level for later review. Autograph / Luminary Tower is kept as one listed entry until the actual assets clarify whether separate logos are needed.
+Logo intake folders are in `Portfolio Uploads/06 - Brand Logos` outside this repository. Group logos can be placed at group-folder level for later review. Autograph / Luminary Tower was removed at Marcel’s request. Agora uses the Lifestyle Mall mark. Ballroom uses the supplied official Instagram profile source, and Chubb Square uses Marcel’s explicitly selected CHUBB image.
 
-The strip pauses on hover/focus, has its own pause control, and follows the global motion control. Reduced-motion and save-data settings disable automatic motion; the complete list remains horizontally scrollable. The duplicate visual list is hidden from screen readers. No logo artwork has been fabricated or downloaded.
+The strip pauses on hover/focus, has its own pause control, and follows the global motion control. Reduced-motion and save-data settings disable automatic motion; the complete list remains horizontally scrollable. The duplicate visual list is hidden from screen readers. Original logo files are preserved in the intake folders; white display variants retain their exact source shapes.
 
 ## Preview
 
