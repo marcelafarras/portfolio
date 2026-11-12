@@ -54,7 +54,7 @@ No build step or package installation is required. Poppins is loaded from Google
 
 ## About section
 
-The full-width yellow About section provides the page’s single yellow background. It uses the original colour portrait and highlights Bintaro Jaya and Thamrin Nine Complex. Company labels under the logos use Marcel’s supplied PT names; project/brand names remain unchanged. Logo cards reserve two lines for the longer company labels.
+The About section retains the black background and uses the original colour portrait. Its existing brand-experience sentence includes Bintaro Jaya and Thamrin Nine Complex alongside UP at Thamrin Nine, Agora Lifestyle Mall and Le Parc Luxury Residence. Company labels under the logos use Marcel’s supplied PT names; project/brand names remain unchanged. Logo cards reserve two lines for the longer company labels.
 
 ## Contact form
 
