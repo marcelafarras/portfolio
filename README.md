@@ -36,6 +36,14 @@ The local `Portfolio Uploads` folder sits beside `work/` in the project workspac
 
 After reviewing incoming work, copy only selected web-ready assets into `assets/` and add accurate `SITE.samples` entries. A carousel category is available now; wire its ordered slides into the viewer when the first actual carousel is added. Do not publish a cover as if it were the complete carousel.
 
+## Brand experience strip
+
+`SITE.brands` lists the 20 brand/project names supplied by Marcel, grouped under MasukKampus, Jaya Real Property, Thamrin Nine and Azure Prism LTD. “Brands I've worked with” describes professional brand experience, not direct freelance-client status. Names are displayed until original logo assets are supplied. Set each `logo` to a reviewed `assets/clients/...` path to replace that name with the actual logo. Preserve legibility and original proportions; a failed logo falls back to its name.
+
+Logo intake folders are in `Portfolio Uploads/06 - Brand Logos` outside this repository. Group logos can be placed at group-folder level for later review. Autograph / Luminary Tower is kept as one listed entry until the actual assets clarify whether separate logos are needed.
+
+The strip pauses on hover/focus, has its own pause control, and follows the global motion control. Reduced-motion and save-data settings disable automatic motion; the complete list remains horizontally scrollable. The duplicate visual list is hidden from screen readers. No logo artwork has been fabricated or downloaded.
+
 ## Preview
 
 Run `python3 -m http.server 4173 --bind 127.0.0.1`, then open `http://127.0.0.1:4173/`.

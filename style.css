@@ -99,6 +99,27 @@ ul { list-style:none; padding:0; margin:0; }
 .hero-footer { display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; padding-block:22px; margin-top:6px; font-size:12px; color:var(--muted); border-bottom:1px solid var(--line); }
 .hero-footer a span { margin-left:18px; color:var(--yellow); }
 
+/* Brand names become original logos as approved assets are supplied. */
+.brand-section { padding-block:34px 26px; overflow:hidden; border-bottom:1px solid var(--line); }
+.brand-heading { display:flex; justify-content:space-between; align-items:center; gap:22px; margin-bottom:22px; }
+.brand-heading h2 { font-size:24px; margin-top:6px; }
+.brand-heading h2 span { color:var(--yellow); }
+.brand-heading p:not(.eyebrow) { font-size:14px; margin-top:7px; }
+.brand-motion-toggle { flex-shrink:0; border:1px solid var(--line); background:var(--panel); border-radius:7px; font-size:12px; padding:8px 11px; }
+.brand-motion-toggle:disabled { color:var(--muted); cursor:default; }
+.brand-window { overflow:hidden; mask-image:linear-gradient(to right,transparent,#000 4%,#000 96%,transparent); }
+.brand-track { display:flex; width:max-content; animation:brand-scroll 110s linear infinite; }
+.brand-list { display:flex; align-items:center; gap:14px; padding-right:14px; flex-shrink:0; }
+.brand-item { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:10px; width:216px; height:108px; padding:16px; border:1px solid #ffffff0c; border-radius:10px; background:#ffffff02; }
+.brand-name { font-size:17px; font-weight:500; line-height:1.35; letter-spacing:-.02em; }
+.brand-group { font-size:12px; color:#909096; }
+.brand-logo { width:168px; height:56px; object-fit:contain; }
+.brand-track.is-paused,.brand-window:hover .brand-track,.brand-window:focus-within .brand-track,body.dialog-open .brand-track { animation-play-state:paused; }
+body.motion-paused .brand-window { overflow-x:auto; mask-image:none; }
+body.motion-paused .brand-track { animation:none; transform:none; }
+body.motion-paused .brand-list[aria-hidden='true'] { display:none; }
+@keyframes brand-scroll { to { transform:translateX(-50%); } }
+
 /* Low-friction paths from a client need to the relevant service. */
 .need-section { padding-top:28px; }
 .need-section>.eyebrow { color:var(--muted); letter-spacing:0; text-transform:none; font-weight:400; font-size:14px; }
@@ -279,6 +300,11 @@ body.motion-paused .will-reveal { opacity:1; transform:none; transition:none; }
   .feature-credit { line-height:1.5; }
   .hero-footer { gap:8px 20px; }
   .hero-footer a { width:100%; margin-top:2px; }
+  .brand-section { padding-block:26px 20px; }
+  .brand-heading { align-items:start; flex-direction:column; gap:14px; }
+  .brand-heading h2 { font-size:22px; }
+  .brand-item { width:190px; height:108px; }
+  .brand-name { font-size:16px; }
   .need-section { padding-top:22px; }
   .need-grid { gap:8px; }
   .need-grid a { font-size:13px; padding:13px 11px; gap:8px; }
@@ -321,5 +347,8 @@ body.motion-paused .will-reveal { opacity:1; transform:none; transition:none; }
 @media(prefers-reduced-motion:reduce) {
   html { scroll-behavior:auto; }
   *,*::before,*::after { animation:none!important; transition:none!important; }
+  .brand-window { overflow-x:auto; mask-image:none; }
+  .brand-track { animation:none; transform:none; }
+  .brand-list[aria-hidden='true'] { display:none; }
   .will-reveal { opacity:1; transform:none; }
 }

@@ -60,3 +60,21 @@ document.getElementById('formatFilters').addEventListener('click', event => {
 document.querySelectorAll('[data-service-filter]').forEach(link => link.addEventListener('click', () => renderSamples(link.dataset.serviceFilter, 'all')));
 document.querySelectorAll('[data-format-link]').forEach(link => link.addEventListener('click', () => renderSamples('all', link.dataset.formatLink)));
 document.getElementById('resetWork').addEventListener('click', () => renderSamples('all', 'all'));
+
+// Use supplied names until reviewed original logo files are available.
+function renderBrands() {
+  const track = document.getElementById('brandTrack');
+  const items = (SITE.brands || []).map(brand => {
+    const logoUrl = safeUrl(brand.logo);
+    return `<li class="brand-item">${logoUrl ? `<img class="brand-logo" src="${logoUrl}" alt="${escapeHtml(brand.name)}" width="168" height="56" loading="lazy" decoding="async">` : `<span class="brand-name">${escapeHtml(brand.name)}</span>`}<span class="brand-group">${escapeHtml(brand.group)}</span></li>`;
+  }).join('');
+  track.innerHTML = `<ul class="brand-list" aria-label="Brands and projects">${items}</ul><ul class="brand-list" aria-hidden="true">${items}</ul>`;
+  // A missing future logo still leaves its brand readable.
+  track.querySelectorAll('.brand-logo').forEach(logo => logo.addEventListener('error', () => {
+    const fallback = document.createElement('span');
+    fallback.className = 'brand-name';
+    fallback.textContent = logo.alt;
+    logo.replaceWith(fallback);
+  }, { once: true }));
+}
+renderBrands();

@@ -3,6 +3,129 @@
 // For future commissioned or self-initiated work, set origin accurately.
 // Never add client names, results or production credits without checking them.
 const SITE = {
+  // Supplied by Marcel. Add only reviewed logo paths after the files are provided.
+  brands: [
+    {
+        "id": "utbk-masukkampus",
+        "name": "utbk.masukkampus",
+        "group": "MasukKampus",
+        "logo": ""
+    },
+    {
+        "id": "simakui-masukkampus",
+        "name": "simakui.masukkampus",
+        "group": "MasukKampus",
+        "logo": ""
+    },
+    {
+        "id": "masuk-kedinasan",
+        "name": "masuk.kedinasan",
+        "group": "MasukKampus",
+        "logo": ""
+    },
+    {
+        "id": "bintaro-jaya",
+        "name": "Bintaro Jaya",
+        "group": "Jaya Real Property",
+        "logo": ""
+    },
+    {
+        "id": "graha-raya",
+        "name": "Graha Raya",
+        "group": "Jaya Real Property",
+        "logo": ""
+    },
+    {
+        "id": "puri-jaya",
+        "name": "Puri Jaya",
+        "group": "Jaya Real Property",
+        "logo": ""
+    },
+    {
+        "id": "jaya-imperial-park",
+        "name": "Jaya Imperial Park",
+        "group": "Jaya Real Property",
+        "logo": ""
+    },
+    {
+        "id": "serpong-jaya",
+        "name": "Serpong Jaya",
+        "group": "Jaya Real Property",
+        "logo": ""
+    },
+    {
+        "id": "emerald-apartemen-bintaro",
+        "name": "Emerald Apartemen Bintaro",
+        "group": "Jaya Real Property",
+        "logo": ""
+    },
+    {
+        "id": "bintaro-plaza-residence",
+        "name": "Bintaro Plaza Residence",
+        "group": "Jaya Real Property",
+        "logo": ""
+    },
+    {
+        "id": "silk-town",
+        "name": "Silk Town",
+        "group": "Jaya Real Property",
+        "logo": ""
+    },
+    {
+        "id": "thamrin-nine",
+        "name": "Thamrin Nine",
+        "group": "Thamrin Nine",
+        "logo": ""
+    },
+    {
+        "id": "autograph-luminary-tower",
+        "name": "Autograph / Luminary Tower",
+        "group": "Thamrin Nine",
+        "logo": ""
+    },
+    {
+        "id": "le-parc-luxury-residence",
+        "name": "Le Parc Luxury Residence",
+        "group": "Thamrin Nine",
+        "logo": ""
+    },
+    {
+        "id": "agora-mall",
+        "name": "Agora Mall",
+        "group": "Thamrin Nine",
+        "logo": ""
+    },
+    {
+        "id": "up-at-thamrin-nine",
+        "name": "UP at Thamrin Nine",
+        "group": "Thamrin Nine",
+        "logo": ""
+    },
+    {
+        "id": "thamrin-nine-ballroom",
+        "name": "Thamrin Nine Ballroom",
+        "group": "Thamrin Nine",
+        "logo": ""
+    },
+    {
+        "id": "chubb-square",
+        "name": "Chubb Square",
+        "group": "Thamrin Nine",
+        "logo": ""
+    },
+    {
+        "id": "smart-panda-global",
+        "name": "Smart Panda Global",
+        "group": "Azure Prism LTD",
+        "logo": ""
+    },
+    {
+        "id": "string-and-space",
+        "name": "String and Space",
+        "group": "Azure Prism LTD",
+        "logo": ""
+    }
+],
   samples: [
     {
       id: 'ai-brand-film', title: 'AI-assisted product story',

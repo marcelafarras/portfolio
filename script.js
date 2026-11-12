@@ -82,6 +82,19 @@ const dialogContent = document.getElementById('projectDialogContent');
 let motionEnabled = !reducedMotion.matches && !saveData;
 let heroVisible = false;
 let sampleObserver;
+let brandManuallyPaused = false;
+const brandMotionToggle = document.getElementById('brandMotionToggle');
+function syncBrands() {
+  const paused = brandManuallyPaused || !motionEnabled;
+  document.getElementById('brandTrack').classList.toggle('is-paused', paused);
+  brandMotionToggle.setAttribute('aria-pressed', String(paused));
+  brandMotionToggle.textContent = !motionEnabled ? 'Brand motion is off' : brandManuallyPaused ? 'Play brand strip' : 'Pause brand strip';
+  brandMotionToggle.disabled = !motionEnabled;
+}
+brandMotionToggle.addEventListener('click', () => {
+  brandManuallyPaused = !brandManuallyPaused;
+  syncBrands();
+});
 
 function syncHero() {
   const canPlay = motionEnabled && heroVisible && !document.hidden && !dialog.open;
@@ -101,6 +114,7 @@ function syncMotion() {
   heroPlayback.setAttribute('aria-pressed', String(!motionEnabled));
   if (!motionEnabled) document.querySelectorAll('[data-hover-preview]').forEach(video => video.pause());
   syncHero();
+  syncBrands();
 }
 heroPlayback.addEventListener('click', () => motionToggle.click());
 motionToggle.addEventListener('click', () => {
