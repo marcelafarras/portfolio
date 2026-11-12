@@ -20,7 +20,7 @@ function renderSamples(service = workState.service, format = workState.format) {
             ? `<img class="media-backdrop" src="${safeUrl(item.poster)}" alt="" aria-hidden="true"><video data-hover-preview src="${safeUrl(item.previewSrc || item.videoSrc)}" poster="${safeUrl(item.poster)}" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>`
             : `<img class="contain" src="${safeUrl(item.image)}" alt="${escapeHtml(item.imageAlt)}" loading="lazy" decoding="async">`}
           <span class="media-action">${item.videoSrc ? '▷ Play video' : '↗ View sample'}</span>
-          <span class="sample-format">${item.videoSrc ? 'Video' : sampleFormat(item) === 'workflow' ? 'Workflow' : 'Image'}</span>
+          <span class="sample-format">${item.videoSrc ? 'Video' : sampleFormat(item) === 'workflow' ? 'Workflow' : sampleFormat(item) === 'carousel' ? 'Carousel' : 'Static'}</span>
         </button>
       </div>
       <div class="sample-info">
@@ -30,10 +30,15 @@ function renderSamples(service = workState.service, format = workState.format) {
       </div>
     </article>`).join('');
   document.getElementById('emptyWork').hidden = items.length > 0;
-  document.getElementById('emptyWorkTitle').textContent = service === 'events' ? "Let's start with your event." : 'A different format. A new possibility.';
-  document.getElementById('emptyWorkDescription').textContent = service === 'events'
-    ? 'No event samples are published here yet. Tell me about your event and the support you need.'
-    : 'No samples match this format and service yet. Explore all the work, or tell me what you have in mind.';
+  const emptyMessage = service === 'events' && serviceItems.length === 0
+    ? ["Let's start with your event.", 'No event samples are published here yet. Tell me about your event and the support you need.']
+    : service === 'design' && serviceItems.length === 0
+      ? ['A design brief starts with your message.', 'Static and carousel design samples will be added here. Tell me what your brand needs to communicate.']
+      : format === 'carousel'
+        ? ['A story, one slide at a time.', 'Carousel samples will be added here. Explore the other work, or tell me about your next carousel.']
+        : ['A different format. A new possibility.', 'No samples match this format and service yet. Explore all the work, or tell me what you have in mind.'];
+  document.getElementById('emptyWorkTitle').textContent = emptyMessage[0];
+  document.getElementById('emptyWorkDescription').textContent = emptyMessage[1];
   document.getElementById('workResults').textContent = `${items.length} ${items.length === 1 ? 'sample' : 'samples'}`;
   document.querySelectorAll('[data-filter]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === service)));
   document.querySelectorAll('[data-format]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.format === format)));

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#0c0c0c">
   <title>Marcel Farras | Ideas & Execution</title>
-  <meta name="description" content="Help your audience understand what you offer through social content, product videos, AI-assisted visuals and practical creative support. Work with Marcel Farras.">
+  <meta name="description" content="Help your audience understand what you offer through social content, graphic design, product videos, AI-assisted visuals and practical creative support. Work with Marcel Farras.">
   <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
   <link rel="icon" href="assets/brand/favicon.png" type="image/png">
   <link rel="stylesheet" href="style.css">
@@ -26,7 +26,8 @@
           <div class="mega-menu work-menu" id="workMenu" hidden>
             <div class="mega-column"><p class="menu-label">Explore by format</p>
               <a href="#gallery" data-format-link="video"><span class="menu-icon" aria-hidden="true">▷</span><span><strong>Video</strong><small>Product stories & social explainers</small></span><span class="menu-arrow" aria-hidden="true">↗</span></a>
-              <a href="#gallery" data-format-link="image"><span class="menu-icon" aria-hidden="true">▧</span><span><strong>Images & design</strong><small>Creative, copy & visual examples</small></span><span class="menu-arrow" aria-hidden="true">↗</span></a>
+              <a href="#gallery" data-format-link="image"><span class="menu-icon" aria-hidden="true">▧</span><span><strong>Static</strong><small>Single-image creative & visual examples</small></span><span class="menu-arrow" aria-hidden="true">↗</span></a>
+              <a href="#gallery" data-format-link="carousel"><span class="menu-icon" aria-hidden="true">▤</span><span><strong>Carousel</strong><small>Stories & information across slides</small></span><span class="menu-arrow" aria-hidden="true">↗</span></a>
               <a href="#gallery" data-format-link="workflow"><span class="menu-icon" aria-hidden="true">⌘</span><span><strong>Workflows</strong><small>The systems behind the content</small></span><span class="menu-arrow" aria-hidden="true">↗</span></a>
               <a class="menu-all" href="#gallery" data-format-link="all">Explore all work <span aria-hidden="true">↗</span></a>
             </div>
@@ -39,6 +40,7 @@
             <a href="#service-social" data-open-service="service-social"><span class="menu-icon" aria-hidden="true">✳</span><span><strong>Social Media</strong><small>Give your audience a clear message.</small></span></a>
             <a href="#service-ai" data-open-service="service-ai"><span class="menu-icon" aria-hidden="true">⌘</span><span><strong>AI Content & Workflows</strong><small>Visualise ideas. Connect the steps.</small></span></a>
             <a href="#service-production" data-open-service="service-production"><span class="menu-icon" aria-hidden="true">▷</span><span><strong>Photo & Video</strong><small>Show your product or experience.</small></span></a>
+            <a href="#service-design" data-open-service="service-design"><span class="menu-icon" aria-hidden="true">▧</span><span><strong>Graphic Design</strong><small>Make your message easy to see.</small></span></a>
             <a href="#service-events" data-open-service="service-events"><span class="menu-icon" aria-hidden="true">▦</span><span><strong>Event Support</strong><small>Get hands-on help on the ground.</small></span></a>
           </div><a class="menu-all" href="#services">View all services <span aria-hidden="true">↗</span></a></div>
         </li>
@@ -52,7 +54,7 @@
     <section class="container hero" id="hero" aria-labelledby="hero-title">
       <div class="hero-intro">
         <div class="hero-copy"><p class="eyebrow"><span class="signal-dot" aria-hidden="true"></span>Your partner in ideas & execution</p><h1 id="hero-title">Make your brand <span>easier to understand.</span></h1></div>
-        <div class="hero-aside"><p class="hero-description">Social content, product videos and AI-assisted visuals. I help turn what your brand offers into something people can see, understand and connect with.</p><a class="text-link" href="#contact">Tell me what you're making <span aria-hidden="true">↗</span></a></div>
+        <div class="hero-aside"><p class="hero-description">Social content, graphic design, product videos and AI-assisted visuals. I help turn what your brand offers into something people can see, understand and connect with.</p><a class="text-link" href="#contact">Tell me what you're making <span aria-hidden="true">↗</span></a></div>
       </div>
       <div class="featured-heading"><h2 id="featured-title">A few things I can make.</h2><div class="rail-controls"><button class="playback-button" id="heroPlayback" type="button" aria-label="Pause automatic previews" aria-pressed="false">Pause previews</button><button class="rail-arrow" type="button" data-rail-direction="-1" aria-label="Previous featured work" aria-controls="featuredTrack">←</button><button class="rail-arrow" type="button" data-rail-direction="1" aria-label="Next featured work" aria-controls="featuredTrack">→</button></div></div>
       <div class="featured-track" id="featuredTrack" role="region" aria-labelledby="featured-title" tabindex="0">
@@ -78,7 +80,8 @@
       <div class="work-toolbar"><div class="format-filters" role="group" aria-label="Filter work by format" id="formatFilters">
         <button type="button" data-format="all" aria-pressed="true">All formats <span data-format-count="all"></span></button>
         <button type="button" data-format="video" aria-pressed="false">Video <span data-format-count="video"></span></button>
-        <button type="button" data-format="image" aria-pressed="false">Images & design <span data-format-count="image"></span></button>
+        <button type="button" data-format="image" aria-pressed="false">Static <span data-format-count="image"></span></button>
+        <button type="button" data-format="carousel" aria-pressed="false">Carousel <span data-format-count="carousel"></span></button>
         <button type="button" data-format="workflow" aria-pressed="false">Workflows <span data-format-count="workflow"></span></button>
       </div><p id="workResults" role="status" aria-live="polite"></p></div>
       <div class="work-filters" role="group" aria-label="Filter work by service" id="workFilters"><span class="filter-label">Service</span>
@@ -86,6 +89,7 @@
         <button type="button" data-filter="social" aria-pressed="false">Social Media</button>
         <button type="button" data-filter="ai" aria-pressed="false">AI Content & Workflows</button>
         <button type="button" data-filter="production" aria-pressed="false">Photo & Video</button>
+        <button type="button" data-filter="design" aria-pressed="false">Graphic Design</button>
         <button type="button" data-filter="events" aria-pressed="false">Event Support</button>
       </div>
       <div class="sample-grid" id="works-grid"></div>
@@ -109,8 +113,12 @@
             <summary><span class="service-number">03</span><span class="service-summary"><span class="service-label">Photo & Video</span><span class="service-title">Show people what <br>your brand can do.</span></span><span class="service-toggle" aria-hidden="true">+</span></summary>
             <div class="service-details"><p>Help people picture your product, service or experience through photo and video. I can support on-camera content, product demonstrations and short-form production, with the shoot and edit scoped to the brief.</p><div><p class="deliverables">Product demos / Talking-head videos / Brand photography / Short-form edits</p><a class="service-link" href="#gallery" data-service-filter="production">Explore photo & video <span aria-hidden="true">↗</span></a></div></div>
           </details>
+          <details class="service-row" id="service-design">
+            <summary><span class="service-number">04</span><span class="service-summary"><span class="service-label">Graphic Design</span><span class="service-title">Give your message a visual form.</span></span><span class="service-toggle" aria-hidden="true">+</span></summary>
+            <div class="service-details"><p>Turn offers, product information and brand ideas into visuals that are easy to follow. I can help with static posts, multi-slide carousels and promotional graphics, shaped around your message, brand and channel.</p><div><p class="deliverables">Static social posts / Carousel design / Promotional graphics / Content adaptations</p><a class="service-link" href="#gallery" data-service-filter="design">Explore graphic design <span aria-hidden="true">↗</span></a></div></div>
+          </details>
           <details class="service-row" id="service-events">
-            <summary><span class="service-number">04</span><span class="service-summary"><span class="service-label">Event Support</span><span class="service-title">Get hands-on support <br>for your next event.</span></span><span class="service-toggle" aria-hidden="true">+</span></summary>
+            <summary><span class="service-number">05</span><span class="service-summary"><span class="service-label">Event Support</span><span class="service-title">Get hands-on support <br>for your next event.</span></span><span class="service-toggle" aria-hidden="true">+</span></summary>
             <div class="service-details"><p>Bring in support for event preparation, content and coordination. We'll agree the responsibilities, deliverables and timeline around what your event needs.</p><div><p class="deliverables">Preparation support / Content coordination / On-ground assistance</p><a class="service-link" href="#contact">Discuss your event <span aria-hidden="true">↗</span></a></div></div>
           </details>
         </div>
