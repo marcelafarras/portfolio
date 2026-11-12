@@ -38,7 +38,7 @@ After reviewing incoming work, copy only selected web-ready assets into `assets/
 
 ## Brand experience strip
 
-`SITE.brands` lists the 19 approved brand names supplied by Marcel, grouped under MasukKampus, Jaya Real Property, Thamrin Nine and Azure Prism LTD. “Brands I've worked with” describes professional brand experience, not direct freelance-client status. The reviewed colour/white display variants are now wired from `assets/clients/`. Source and treatment notes are in that directory’s README. Set each `logo` to a reviewed `assets/clients/...` path to replace that name with the actual logo. Preserve legibility and original proportions; a failed logo falls back to its name.
+`SITE.brands` lists the 19 approved brand names supplied by Marcel, grouped under PT. Inspirasi MasukKampus, PT. Jaya Real Property, Tbk., PT. Putragaya Wahana and Azure Prism LTD. “Brands I've worked with” describes professional brand experience, not direct freelance-client status. The reviewed colour/white display variants are now wired from `assets/clients/`. Source and treatment notes are in that directory’s README. Set each `logo` to a reviewed `assets/clients/...` path to replace that name with the actual logo. Preserve legibility and original proportions; a failed logo falls back to its name.
 
 Logo intake folders are in `Portfolio Uploads/06 - Brand Logos` outside this repository. Group logos can be placed at group-folder level for later review. Autograph / Luminary Tower was removed at Marcel’s request. Agora uses the Lifestyle Mall mark. Ballroom uses the supplied official Instagram profile source, and Chubb Square uses Marcel’s explicitly selected CHUBB image.
 
@@ -51,6 +51,10 @@ Run `python3 -m http.server 4173 --bind 127.0.0.1`, then open `http://127.0.0.1:
 No build step or package installation is required. Poppins is loaded from Google Fonts, with system fallbacks. Body copy and form inputs use at least 16px; secondary labels use 12px or larger.
 
 `assets/brand/` contains Marcel’s supplied MF logos with transparent outer padding trimmed for layout, plus tab icons derived from the black logo on the brand yellow. The white logo is used on dark backgrounds; the gold and black variants are available for other placements.
+
+## About section
+
+The About section retains the black background and uses the original colour portrait. Its existing brand-experience sentence includes Bintaro Jaya and Thamrin Nine Complex alongside UP at Thamrin Nine, Agora Lifestyle Mall and Le Parc Luxury Residence. Company labels under the logos use Marcel’s supplied PT names; project/brand names remain unchanged. Logo cards reserve two lines for the longer company labels.
 
 ## Contact form
 
