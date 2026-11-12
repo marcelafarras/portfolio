@@ -148,9 +148,12 @@
     <section class="contact-section section" id="contact" aria-labelledby="contact-title">
       <div class="container contact-grid">
         <div class="contact-copy reveal-item"><p class="eyebrow">05 / Your next brief</p><h2 id="contact-title">What are you <br>trying to <br><span>make happen?</span></h2><p>Tell me about your brand, what you need help with, and your timeline. I'll help you work out what we can make together.</p><a class="contact-email" href="mailto:marcelafarras@gmail.com">marcelafarras@gmail.com <span aria-hidden="true">↗</span></a><div class="contact-links"><a href="tel:+6285162546460">+62 851 6254 6460</a><a href="https://www.linkedin.com/in/marcelafarras" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span></a></div></div>
-        <form id="contactForm" class="contact-form reveal-item">
+        <form id="contactForm" class="contact-form reveal-item" name="project-enquiry" method="POST" action="/thank-you.html" data-netlify="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="project-enquiry">
+          <input type="hidden" name="subject" value="New project enquiry | Marcel Farras portfolio">
+          <p hidden><label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
           <div class="form-row"><div class="field"><label for="contactName">Your name</label><input id="contactName" name="name" autocomplete="name" required maxlength="150"></div><div class="field"><label for="contactEmail">Email address</label><input id="contactEmail" name="email" type="email" autocomplete="email" required maxlength="254"></div></div>
-          <div class="field"><label for="contactSubject">What do you need help with?</label><input id="contactSubject" name="subject" maxlength="200" placeholder="Content, a video, an event..."></div>
+          <div class="field"><label for="contactSubject">What do you need help with?</label><input id="contactSubject" name="project_type" maxlength="200" placeholder="Content, a video, an event..."></div>
           <div class="field"><label for="contactMessage">Tell me about the project</label><textarea id="contactMessage" name="message" rows="4" required maxlength="5000" placeholder="The brand, the brief and your timeline."></textarea></div>
           <button class="button button-yellow send-button" type="submit">Discuss your project <span aria-hidden="true">↗</span></button><p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
         </form>

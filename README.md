@@ -58,7 +58,16 @@ The About section retains the black background and uses the original colour port
 
 ## Contact form
 
-The existing n8n endpoint is retained in `script.js`. HTTP error responses do not display a successful delivery message. Browser validation and a request timeout are included. Tests should use a mock endpoint or mock fetch, not send messages to the production workflow.
+The `project-enquiry` form uses Netlify Forms. Netlify stores submissions and sends email notifications independently of the deleted n8n instance. `script.js` posts URL-encoded form data to the same site, checks HTTP errors, prevents simultaneous duplicate submissions, and retains the visitor's inputs if delivery cannot be confirmed. Native submission without JavaScript goes to `thank-you.html`. A honeypot helps filter spam.
+
+Required dashboard setup for **each** Netlify project serving this repository:
+
+1. Check the project's Forms usage and plan before enabling it. Do not accept paid upgrades without the owner's approval.
+2. Enable form detection under Forms, then deploy this revision. Confirm `project-enquiry` appears in the dashboard.
+3. Add an email submission notification to `marcelafarras@gmail.com`. Complete recipient verification if Netlify requests it. The visitor's `email` field supplies Reply-To; their requested service is stored as `project_type`.
+4. Send one clearly labelled test through the deployed form. Confirm both the stored submission and the email receipt before considering recovery complete.
+
+Local automated checks use mock fetch and never submit real enquiries. Run `node --test tests/contact-form.test.cjs`. A plain local HTTP server does not implement Netlify Forms, so a local submit is expected to show the error fallback.
 
 ## Publication
 

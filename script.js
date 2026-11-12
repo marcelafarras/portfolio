@@ -233,33 +233,36 @@ dialogContent.addEventListener('click', event => {
   if (event.target.closest('.sample-enquiry')) dialog.close();
 });
 
-// Retain the existing contact integration; use mocks when testing delivery.
-const N8N_WEBHOOK = 'https://n8n-bjje2k7bz6nk.jkt5.sumopod.my.id/webhook/88e1a423-75f7-47b7-8a12-25aa7e2aa2cc';
+// Netlify captures this named form at deploy time; no external webhook is needed.
 const form = document.getElementById('contactForm');
 const formStatus = document.getElementById('formStatus');
 form.addEventListener('submit', async event => {
   event.preventDefault();
   const button = form.querySelector('[type="submit"]');
   if (button.disabled) return;
+  if (!form.reportValidity()) return;
   const fields = new FormData(form);
-  const payload = Object.fromEntries(['name', 'email', 'subject', 'message'].map(key => [key, String(fields.get(key) || '').trim()]));
-  if (!payload.name || !payload.email || !payload.message) {
+  const payload = new URLSearchParams();
+  for (const [key, value] of fields) payload.set(key, String(value).trim());
+  if (!payload.get('name') || !payload.get('email') || !payload.get('message')) {
     formStatus.textContent = 'Please add your name, email and a short message.';
     return;
   }
   button.disabled = true;
+  form.setAttribute('aria-busy', 'true');
   formStatus.textContent = 'Sending your message...';
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 15000);
   try {
-    const response = await fetch(N8N_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...payload, timestamp: new Date().toISOString() }), signal: controller.signal });
+    const response = await fetch(form.action, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: payload.toString(), signal: controller.signal });
     if (!response.ok) throw new Error('Message delivery failed');
-    formStatus.textContent = 'Thanks. Your message has been sent.';
+    formStatus.textContent = 'Thanks. Your message has been received.';
     form.reset();
   } catch {
-    formStatus.textContent = 'Your message could not be sent. Please email marcelafarras@gmail.com instead.';
+    formStatus.textContent = "We couldn't confirm your message was received. Please email marcelafarras@gmail.com instead.";
   } finally {
     clearTimeout(timer);
     button.disabled = false;
+    form.removeAttribute('aria-busy');
   }
 });
