@@ -1,82 +1,265 @@
-// Navbar scroll behavior
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 40);
-});
-
-// Mobile nav toggle
+// Navigation uses disclosures, with the same links available on touch and keyboard.
 const navToggle = document.getElementById('navToggle');
 const navLinks = document.getElementById('navLinks');
+const menuButtons = [...document.querySelectorAll('.nav-menu-button')];
+function closePanels(except) {
+  menuButtons.forEach(button => {
+    if (button === except) return;
+    button.setAttribute('aria-expanded', 'false');
+    document.getElementById(button.getAttribute('aria-controls')).hidden = true;
+  });
+}
+function closeMenu() {
+  navLinks.classList.remove('open');
+  navToggle.setAttribute('aria-expanded', 'false');
+  closePanels();
+}
 navToggle.addEventListener('click', () => {
-  navLinks.classList.toggle('open');
+  const open = navToggle.getAttribute('aria-expanded') !== 'true';
+  navToggle.setAttribute('aria-expanded', String(open));
+  navLinks.classList.toggle('open', open);
+  if (!open) closePanels();
 });
-navLinks.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => navLinks.classList.remove('open'));
+menuButtons.forEach(button => button.addEventListener('click', () => {
+  const open = button.getAttribute('aria-expanded') !== 'true';
+  closePanels(button);
+  button.setAttribute('aria-expanded', String(open));
+  document.getElementById(button.getAttribute('aria-controls')).hidden = !open;
+}));
+navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+document.addEventListener('click', event => {
+  if (!document.getElementById('navbar').contains(event.target)) closeMenu();
 });
-
-// Scroll fade-in animation
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.12 });
-
-document.querySelectorAll(
-  '.timeline-item, .skill-card, .work-card, .personal-card, .cert-card, .ai-placeholder-card, .ai-category, .step, .about-left, .about-right, .contact-left, .contact-right'
-).forEach(el => {
-  el.classList.add('fade-in');
-  observer.observe(el);
+document.addEventListener('focusin', event => {
+  if (!document.getElementById('navbar').contains(event.target)) closePanels();
 });
-
-// ── CONTACT FORM → N8N WEBHOOK ───────────────────────────────
-// TEST URL  : use this while testing in N8N (workflow open, test mode on)
-// PROD URL  : switch to this after you activate the workflow in N8N
-//             Change "webhook-test" → "webhook" in the URL below
-const N8N_WEBHOOK = "https://n8n-bjje2k7bz6nk.jkt5.sumopod.my.id/webhook/88e1a423-75f7-47b7-8a12-25aa7e2aa2cc";
-
-document.getElementById('contactForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const btn = this.querySelector('button[type="submit"]');
-  const [name, email, subject, message] = [...this.querySelectorAll('input, textarea')].map(el => el.value);
-
-  btn.textContent = 'Sending...';
-  btn.disabled = true;
-
-  try {
-    await fetch(N8N_WEBHOOK, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, subject, message, timestamp: new Date().toISOString() }),
-    });
-    btn.textContent = 'Message Sent! ✓';
-    btn.style.background = '#22c55e';
-    btn.style.borderColor = '#22c55e';
-    this.reset();
-  } catch {
-    btn.textContent = 'Failed — try emailing directly';
-    btn.style.background = '#ef4444';
+document.addEventListener('keydown', event => {
+  if (event.key !== 'Escape') return;
+  const expanded = menuButtons.find(button => button.getAttribute('aria-expanded') === 'true');
+  if (expanded) {
+    closePanels();
+    expanded.focus();
+  } else if (navToggle.getAttribute('aria-expanded') === 'true') {
+    closeMenu();
+    navToggle.focus();
   }
+});
+window.matchMedia('(min-width: 901px)').addEventListener('change', closeMenu);
+document.getElementById('year').textContent = new Date().getFullYear();
 
-  setTimeout(() => {
-    btn.textContent = 'Send Message';
-    btn.style.background = '';
-    btn.style.borderColor = '';
-    btn.disabled = false;
-  }, 4000);
+document.querySelectorAll('[data-open-service]').forEach(link => link.addEventListener('click', () => {
+  const service = document.getElementById(link.dataset.openService);
+  if (service) service.open = true;
+}));
+document.querySelectorAll('.service-row').forEach(service => service.addEventListener('toggle', () => {
+  if (!service.open) return;
+  document.querySelectorAll('.service-row').forEach(other => {
+    if (other !== service) other.open = false;
+  });
+}));
+
+// Direct links and reloads should open the service they point to.
+function openLinkedService() {
+  const id = window.location.hash.slice(1);
+  const service = id && document.getElementById(id);
+  if (!service || !service.matches('.service-row')) return;
+  document.querySelectorAll('.service-row').forEach(other => {
+    other.open = other === service;
+  });
+}
+window.addEventListener('hashchange', openLinkedService);
+openLinkedService();
+
+// Automatic motion is silent, optional and disabled for reduced-motion/save-data preferences.
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+const saveData = Boolean(navigator.connection && navigator.connection.saveData);
+const heroVideo = document.getElementById('heroPreview');
+const heroPlayback = document.getElementById('heroPlayback');
+const motionToggle = document.getElementById('motionToggle');
+const dialog = document.getElementById('projectDialog');
+const dialogContent = document.getElementById('projectDialogContent');
+let motionEnabled = !reducedMotion.matches && !saveData;
+let heroVisible = false;
+let sampleObserver;
+let brandManuallyPaused = false;
+const brandMotionToggle = document.getElementById('brandMotionToggle');
+function syncBrands() {
+  const paused = brandManuallyPaused || !motionEnabled;
+  document.getElementById('brandTrack').classList.toggle('is-paused', paused);
+  brandMotionToggle.setAttribute('aria-pressed', String(paused));
+  brandMotionToggle.textContent = !motionEnabled ? 'Brand motion is off' : brandManuallyPaused ? 'Play brand strip' : 'Pause brand strip';
+  brandMotionToggle.disabled = !motionEnabled;
+}
+brandMotionToggle.addEventListener('click', () => {
+  brandManuallyPaused = !brandManuallyPaused;
+  syncBrands();
 });
 
-// Active nav link on scroll
-const sections = document.querySelectorAll('section[id]');
-window.addEventListener('scroll', () => {
-  let current = '';
-  sections.forEach(section => {
-    if (window.scrollY >= section.offsetTop - 100) {
-      current = section.getAttribute('id');
-    }
+function syncHero() {
+  const canPlay = motionEnabled && heroVisible && !document.hidden && !dialog.open;
+  if (canPlay) {
+    heroVideo.muted = true;
+    heroVideo.play().catch(() => {});
+  } else {
+    heroVideo.pause();
+  }
+}
+function syncMotion() {
+  document.body.classList.toggle('motion-paused', !motionEnabled);
+  motionToggle.setAttribute('aria-pressed', String(!motionEnabled));
+  motionToggle.textContent = motionEnabled ? 'Pause motion' : 'Enable motion';
+  heroPlayback.textContent = motionEnabled ? 'Pause previews' : 'Enable previews';
+  heroPlayback.setAttribute('aria-label', motionEnabled ? 'Pause automatic previews' : 'Enable automatic previews');
+  heroPlayback.setAttribute('aria-pressed', String(!motionEnabled));
+  if (!motionEnabled) document.querySelectorAll('[data-hover-preview]').forEach(video => video.pause());
+  syncHero();
+  syncBrands();
+}
+heroPlayback.addEventListener('click', () => motionToggle.click());
+motionToggle.addEventListener('click', () => {
+  motionEnabled = !motionEnabled;
+  syncMotion();
+});
+reducedMotion.addEventListener('change', event => {
+  motionEnabled = !event.matches && !saveData;
+  syncMotion();
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) document.querySelectorAll('video').forEach(video => video.pause());
+  syncHero();
+});
+
+if ('IntersectionObserver' in window) {
+  new IntersectionObserver(entries => {
+    heroVisible = entries[0].isIntersecting;
+    syncHero();
+  }, { threshold: 0.2 }).observe(heroVideo);
+} else {
+  heroVisible = true;
+}
+syncMotion();
+
+function setupSamplePreviews() {
+  if (sampleObserver) sampleObserver.disconnect();
+  if ('IntersectionObserver' in window) {
+    sampleObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (!entry.isIntersecting) entry.target.pause();
+    }), { threshold: 0.1 });
+  }
+  document.querySelectorAll('.preview-card').forEach(card => {
+    const video = card.querySelector('[data-hover-preview]');
+    if (!video) return;
+    if (sampleObserver) sampleObserver.observe(video);
+    if (card.dataset.previewBound) return;
+    card.dataset.previewBound = 'true';
+    const start = () => {
+      if (!motionEnabled || !finePointer.matches || document.hidden || dialog.open) return;
+      video.muted = true;
+      video.play().catch(() => {});
+    };
+    const stop = () => video.pause();
+    card.addEventListener('pointerenter', start);
+    card.addEventListener('pointerleave', stop);
+    card.addEventListener('focusin', start);
+    card.addEventListener('focusout', event => {
+      if (!card.contains(event.relatedTarget)) stop();
+    });
   });
-  document.querySelectorAll('.nav-links a').forEach(a => {
-    a.style.color = a.getAttribute('href') === `#${current}` ? 'var(--yellow)' : '';
+}
+document.addEventListener('samplesrendered', setupSamplePreviews);
+setupSamplePreviews();
+
+// The featured rail never advances automatically.
+const featuredTrack = document.getElementById('featuredTrack');
+const railButtons = [...document.querySelectorAll('[data-rail-direction]')];
+function updateRailButtons() {
+  railButtons.forEach(button => {
+    button.disabled = Number(button.dataset.railDirection) < 0
+      ? featuredTrack.scrollLeft < 2
+      : featuredTrack.scrollLeft + featuredTrack.clientWidth >= featuredTrack.scrollWidth - 2;
   });
+}
+railButtons.forEach(button => button.addEventListener('click', () => {
+  const card = featuredTrack.querySelector('.feature-card');
+  featuredTrack.scrollBy({ left: Number(button.dataset.railDirection) * (card.getBoundingClientRect().width + 18), behavior: motionEnabled ? 'smooth' : 'instant' });
+}));
+featuredTrack.addEventListener('scroll', updateRailButtons, { passive: true });
+window.addEventListener('resize', updateRailButtons);
+updateRailButtons();
+
+// Content stays visible if motion is disabled or this enhancement is unsupported.
+if ('IntersectionObserver' in window && motionEnabled) {
+  const revealObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    entry.target.classList.add('is-visible');
+    revealObserver.unobserve(entry.target);
+  }), { threshold: 0.1 });
+  document.querySelectorAll('.reveal-item').forEach(item => {
+    item.classList.add('will-reveal');
+    revealObserver.observe(item);
+  });
+}
+
+// A thumbnail plays the full work; the secondary button opens its context first.
+document.addEventListener('click', event => {
+  const button = event.target.closest('[data-project]');
+  if (!button) return;
+  const item = SITE.samples.find(sample => sample.id === button.dataset.project);
+  if (!item) return;
+  dialogContent.innerHTML = `${item.videoSrc
+    ? `<video class="dialog-video" src="${safeUrl(item.videoSrc)}" poster="${safeUrl(item.poster)}" controls playsinline preload="metadata" aria-label="${escapeHtml(item.title)}"></video>`
+    : `<img class="dialog-image" src="${safeUrl(item.image)}" alt="${escapeHtml(item.imageAlt)}">`}
+    <div class="dialog-copy"><p class="eyebrow">${escapeHtml(item.category)}</p><h2 id="projectDialogTitle">${escapeHtml(item.title)}</h2><p>${escapeHtml(item.description)}</p><div class="dialog-details"><div><h3>What this can help with</h3><p>${escapeHtml(item.demonstrates)}</p></div><div><h3>Project type</h3><p>${escapeHtml(item.origin)}</p></div></div>${externalLink(item.videoSrc || item.image, item.linkLabel)}<a class="sample-enquiry" href="#contact">Discuss something similar ↗</a></div>`;
+  document.querySelectorAll('video').forEach(video => video.pause());
+  dialog.showModal();
+  dialog.scrollTop = 0;
+  document.body.classList.add('dialog-open');
+  const fullVideo = dialog.querySelector('video');
+  if (fullVideo && button.dataset.startPlayback === 'true') fullVideo.play().catch(() => {});
+});
+dialog.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
+dialog.addEventListener('click', event => {
+  if (event.target !== dialog) return;
+  const rect = dialog.getBoundingClientRect();
+  if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
+});
+dialog.addEventListener('close', () => {
+  dialog.querySelectorAll('video').forEach(video => video.pause());
+  document.body.classList.remove('dialog-open');
+  syncHero();
+});
+dialogContent.addEventListener('click', event => {
+  if (event.target.closest('.sample-enquiry')) dialog.close();
+});
+
+// Retain the existing contact integration; use mocks when testing delivery.
+const N8N_WEBHOOK = 'https://n8n-bjje2k7bz6nk.jkt5.sumopod.my.id/webhook/88e1a423-75f7-47b7-8a12-25aa7e2aa2cc';
+const form = document.getElementById('contactForm');
+const formStatus = document.getElementById('formStatus');
+form.addEventListener('submit', async event => {
+  event.preventDefault();
+  const button = form.querySelector('[type="submit"]');
+  if (button.disabled) return;
+  const fields = new FormData(form);
+  const payload = Object.fromEntries(['name', 'email', 'subject', 'message'].map(key => [key, String(fields.get(key) || '').trim()]));
+  if (!payload.name || !payload.email || !payload.message) {
+    formStatus.textContent = 'Please add your name, email and a short message.';
+    return;
+  }
+  button.disabled = true;
+  formStatus.textContent = 'Sending your message...';
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 15000);
+  try {
+    const response = await fetch(N8N_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...payload, timestamp: new Date().toISOString() }), signal: controller.signal });
+    if (!response.ok) throw new Error('Message delivery failed');
+    formStatus.textContent = 'Thanks. Your message has been sent.';
+    form.reset();
+  } catch {
+    formStatus.textContent = 'Your message could not be sent. Please email marcelafarras@gmail.com instead.';
+  } finally {
+    clearTimeout(timer);
+    button.disabled = false;
+  }
 });
