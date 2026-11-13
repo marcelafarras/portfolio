@@ -201,20 +201,51 @@ if ('IntersectionObserver' in window && motionEnabled) {
   });
 }
 
+// Carousels retain the complete sequence, with touch, keyboard and button controls.
+function projectMedia(item) {
+  if (item.videoSrc) return `<video class="dialog-video" src="${safeUrl(item.videoSrc)}" poster="${safeUrl(item.poster)}" controls playsinline preload="metadata" aria-label="${escapeHtml(item.title)}"></video>`;
+  if (item.slides?.length) return `<div class="carousel-viewer" role="region" aria-label="${escapeHtml(item.title)} slides"><div class="carousel-track" id="carouselTrack" tabindex="0" aria-label="Carousel slides. Use left and right arrow keys to browse.">${item.slides.map((slide, index) => `<figure class="carousel-slide" role="group" aria-label="Slide ${index + 1} of ${item.slides.length}"><img src="${safeUrl(slide.src)}" alt="${escapeHtml(slide.alt)}" ${index ? 'loading="lazy"' : ''}><figcaption>${index + 1} / ${item.slides.length}</figcaption></figure>`).join('')}</div><div class="carousel-controls"><button type="button" data-slide-direction="-1" aria-label="Previous slide" aria-controls="carouselTrack" disabled>←</button><p id="carouselStatus" role="status" aria-live="polite">Slide 1 of ${item.slides.length}</p><button type="button" data-slide-direction="1" aria-label="Next slide" aria-controls="carouselTrack">→</button></div></div>`;
+  return `<img class="dialog-image" src="${safeUrl(item.image)}" alt="${escapeHtml(item.imageAlt)}">`;
+}
+
+function setupCarousel(item) {
+  const track = dialogContent.querySelector('.carousel-track');
+  if (!track) return;
+  const previous = dialogContent.querySelector('[data-slide-direction="-1"]');
+  const next = dialogContent.querySelector('[data-slide-direction="1"]');
+  const currentIndex = () => Math.max(0, Math.min(item.slides.length - 1, Math.round(track.scrollLeft / track.clientWidth)));
+  const update = () => {
+    const index = currentIndex();
+    previous.disabled = index === 0;
+    next.disabled = index === item.slides.length - 1;
+    document.getElementById('carouselStatus').textContent = `Slide ${index + 1} of ${item.slides.length}`;
+    dialogContent.querySelector('.dialog-copy .text-link').href = item.slides[index].src;
+  };
+  const move = direction => track.scrollTo({ left: Math.max(0, Math.min(item.slides.length - 1, currentIndex() + direction)) * track.clientWidth, behavior: motionEnabled ? 'smooth' : 'instant' });
+  previous.addEventListener('click', () => move(-1));
+  next.addEventListener('click', () => move(1));
+  track.addEventListener('scroll', update, { passive: true });
+  track.addEventListener('keydown', event => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+    event.preventDefault();
+    move(event.key === 'ArrowLeft' ? -1 : 1);
+  });
+  update();
+}
+
 // A thumbnail plays the full work; the secondary button opens its context first.
 document.addEventListener('click', event => {
   const button = event.target.closest('[data-project]');
   if (!button) return;
   const item = SITE.samples.find(sample => sample.id === button.dataset.project);
   if (!item) return;
-  dialogContent.innerHTML = `${item.videoSrc
-    ? `<video class="dialog-video" src="${safeUrl(item.videoSrc)}" poster="${safeUrl(item.poster)}" controls playsinline preload="metadata" aria-label="${escapeHtml(item.title)}"></video>`
-    : `<img class="dialog-image" src="${safeUrl(item.image)}" alt="${escapeHtml(item.imageAlt)}">`}
+  dialogContent.innerHTML = `${projectMedia(item)}
     <div class="dialog-copy"><p class="eyebrow">${escapeHtml(item.category)}</p><h2 id="projectDialogTitle">${escapeHtml(item.title)}</h2><p>${escapeHtml(item.description)}</p><div class="dialog-details"><div><h3>What this can help with</h3><p>${escapeHtml(item.demonstrates)}</p></div><div><h3>Project type</h3><p>${escapeHtml(item.origin)}</p></div></div>${externalLink(item.videoSrc || item.image, item.linkLabel)}<a class="sample-enquiry" href="#contact">Discuss something similar ↗</a></div>`;
   document.querySelectorAll('video').forEach(video => video.pause());
   dialog.showModal();
   dialog.scrollTop = 0;
   document.body.classList.add('dialog-open');
+  setupCarousel(item);
   const fullVideo = dialog.querySelector('video');
   if (fullVideo && button.dataset.startPlayback === 'true') fullVideo.play().catch(() => {});
 });
