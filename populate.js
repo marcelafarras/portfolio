@@ -2,25 +2,27 @@
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 const safeUrl = value => /^(https:\/\/|assets\/)/.test(String(value || '')) ? escapeHtml(value) : '';
 const externalLink = (url, label, cls = 'text-link') => `<a class="${cls}" href="${safeUrl(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)} <span aria-hidden="true">↗</span></a>`;
-const workState = { service: 'all', format: 'all' };
+const workState = { service: 'all', format: 'all', limit: 12 };
 const sampleFormat = item => item.format || (item.videoSrc ? 'video' : 'image');
 
-function renderSamples(service = workState.service, format = workState.format) {
+function renderSamples(service = workState.service, format = workState.format, expand = false) {
   workState.service = service;
   workState.format = format;
+  workState.limit = expand ? workState.limit + 12 : 12;
   document.querySelectorAll('#works-grid video').forEach(video => video.pause());
   const serviceItems = SITE.samples.filter(item => service === 'all' || item.services.includes(service));
   const items = serviceItems.filter(item => format === 'all' || sampleFormat(item) === format);
-  document.getElementById('works-grid').dataset.count = String(items.length);
-  document.getElementById('works-grid').innerHTML = items.map(item => `
-    <article class="sample-card preview-card ${item.videoSrc ? 'has-video' : ''}">
+  const visibleItems = items.slice(0, workState.limit);
+  document.getElementById('works-grid').dataset.count = String(visibleItems.length);
+  document.getElementById('works-grid').innerHTML = visibleItems.map(item => `
+    <article class="sample-card preview-card ${item.videoSrc ? 'has-video' : ''} ${item.slides?.length ? 'has-carousel' : ''}">
       <div class="sample-media">
         <button class="media-open" type="button" data-project="${escapeHtml(item.id)}" ${item.videoSrc ? 'data-start-playback="true"' : ''} aria-label="${item.videoSrc ? 'Watch' : 'View'} ${escapeHtml(item.title)}">
           ${item.videoSrc
             ? `<img class="media-backdrop" src="${safeUrl(item.poster)}" alt="" aria-hidden="true"><video data-hover-preview src="${safeUrl(item.previewSrc || item.videoSrc)}" poster="${safeUrl(item.poster)}" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>`
             : `<img class="contain" src="${safeUrl(item.image)}" alt="${escapeHtml(item.imageAlt)}" loading="lazy" decoding="async">`}
           <span class="media-action">${item.videoSrc ? '▷ Play video' : '↗ View sample'}</span>
-          <span class="sample-format">${item.videoSrc ? 'Video' : sampleFormat(item) === 'workflow' ? 'Workflow' : sampleFormat(item) === 'carousel' ? 'Carousel' : 'Static'}</span>
+          <span class="sample-format">${item.videoSrc ? 'Video' : sampleFormat(item) === 'workflow' ? 'Workflow' : sampleFormat(item) === 'carousel' ? `${item.slides.length} slides` : 'Static'}</span>
         </button>
       </div>
       <div class="sample-info">
@@ -39,7 +41,8 @@ function renderSamples(service = workState.service, format = workState.format) {
         : ['A different format. A new possibility.', 'No samples match this format and service yet. Explore all the work, or tell me what you have in mind.'];
   document.getElementById('emptyWorkTitle').textContent = emptyMessage[0];
   document.getElementById('emptyWorkDescription').textContent = emptyMessage[1];
-  document.getElementById('workResults').textContent = `${items.length} ${items.length === 1 ? 'sample' : 'samples'}`;
+  document.getElementById('workResults').textContent = `${visibleItems.length < items.length ? `${visibleItems.length} of ` : ''}${items.length} ${items.length === 1 ? 'sample' : 'samples'}`;
+  document.getElementById('loadMoreWork').hidden = visibleItems.length >= items.length;
   document.querySelectorAll('[data-filter]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === service)));
   document.querySelectorAll('[data-format]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.format === format)));
   document.querySelectorAll('[data-format-count]').forEach(count => {
@@ -60,6 +63,11 @@ document.getElementById('formatFilters').addEventListener('click', event => {
 document.querySelectorAll('[data-service-filter]').forEach(link => link.addEventListener('click', () => renderSamples(link.dataset.serviceFilter, 'all')));
 document.querySelectorAll('[data-format-link]').forEach(link => link.addEventListener('click', () => renderSamples('all', link.dataset.formatLink)));
 document.getElementById('resetWork').addEventListener('click', () => renderSamples('all', 'all'));
+document.getElementById('loadMoreWork').addEventListener('click', () => {
+  const previousCount = document.querySelectorAll('#works-grid .sample-card').length;
+  renderSamples(workState.service, workState.format, true);
+  document.querySelectorAll('#works-grid .media-open')[previousCount]?.focus({ preventScroll: true });
+});
 
 // Reviewed logos fall back to the supplied name if an asset is unavailable.
 function renderBrands() {

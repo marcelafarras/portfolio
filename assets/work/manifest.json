@@ -1,0 +1,160 @@
+[
+  {
+    "source": "03 - AI Content/AI Content-UGC.mp4",
+    "sha256": "9ad05852d3b4d6434714bdac8caf4870edc98e4a0711650309c8cf661f694b49",
+    "output": "assets/work/album-at-home",
+    "sourceBytes": 19819350,
+    "webBytes": 3621014
+  },
+  {
+    "source": "03 - AI Content/AI Content-UGC_Comment-led.mp4",
+    "sha256": "791f04940c1ab14f7b97d1391450ae36b320f558c8859dd9ded6ecc96d5623fb",
+    "output": "assets/work/planner-comment-reply",
+    "sourceBytes": 6575816,
+    "webBytes": 3613615
+  },
+  {
+    "source": "03 - AI Content/AI Content-Animated Character.mp4",
+    "sha256": "9a195e93af3e4f78485ae327014f95323147d85e5da4583e86d2079fe32c9461",
+    "output": "assets/work/halloween-characters",
+    "sourceBytes": 45490748,
+    "webBytes": 3075890
+  },
+  {
+    "source": "03 - AI Content/AI Content-Product prelaunch.mp4",
+    "sha256": "5b41ba1a12240461ec7dd5f1fd12b846f0a80e43446fa464e865479432a5bf45",
+    "output": "assets/work/album-prelaunch",
+    "sourceBytes": 15660715,
+    "webBytes": 1296968
+  },
+  {
+    "source": "03 - AI Content/AI Content-product-led.mp4",
+    "sha256": "bb4b47978b903ad5f6520696d71ed9b08c9ed33b37524ba99c5523a94705b604",
+    "output": "assets/work/small-wins",
+    "sourceBytes": 28371558,
+    "webBytes": 2698128
+  },
+  {
+    "source": "03 - AI Content/AI Content-UGC_ads.mp4",
+    "sha256": "10fb9c670f7a51ac3175d5e832e704571fa0d7b3233d5ff26ac2f0e5e90b4b0f",
+    "output": "assets/work/planner-ugc-ad",
+    "sourceBytes": 11000892,
+    "webBytes": 2229267
+  },
+  {
+    "source": "03 - AI Content/AI Content-Animated1.mp4",
+    "sha256": "416db8ba715e1a203a0c41df9aa24ef0c464096e08861b6112847c0d926c04d7",
+    "output": "assets/work/animated-chart",
+    "sourceBytes": 15319574,
+    "webBytes": 2091155
+  },
+  {
+    "source": "03 - AI Content/AI Content-Character.mp4",
+    "sha256": "c8b5411446bf97243e01f594e41d3fc931614375953435f2d038ea8419499ba5",
+    "output": "assets/work/dancing-character",
+    "sourceBytes": 14491198,
+    "webBytes": 1665914
+  },
+  {
+    "source": "03 - AI Content/AI Content-Product Launch.mp4",
+    "sha256": "4c42d888d9920939f906f991fcee787e80797e8704bfe78879e259797e65cb9c",
+    "output": "assets/work/planner-launch",
+    "sourceBytes": 12861927,
+    "webBytes": 1305788
+  },
+  {
+    "source": "03 - AI Content/AI Content-Skit.mp4",
+    "sha256": "eb2d123f44d771561effa9cb87dd8023363bc26b4c09e3bae58973f57d1629d2",
+    "output": "assets/work/halloween-skit",
+    "sourceBytes": 8870620,
+    "webBytes": 2252362
+  },
+  {
+    "source": "03 - AI Content/AI Content-Skit1.mp4",
+    "sha256": "518589da65c2756e04e812c3d48673236a2f6696838b536485f172b23af5da53",
+    "output": "assets/work/vampire-skit",
+    "sourceBytes": 14820905,
+    "webBytes": 1426570
+  },
+  {
+    "source": "03 - AI Content/AI Content-UGC1.mp4",
+    "sha256": "be3de6cad96a2947e24f31593bfb38cf93a7e94ea9aa2465d68d58260493b953",
+    "output": "assets/work/album-outdoors",
+    "sourceBytes": 25432898,
+    "webBytes": 2838500
+  },
+  {
+    "source": "03 - AI Content/AI Content-UGC2.mp4",
+    "sha256": "057defa192adcef6ea19a807e5df91304e8646d39d109de0590729f740760f25",
+    "output": "assets/work/album-fisheye",
+    "sourceBytes": 13471251,
+    "webBytes": 1456544
+  },
+  {
+    "source": "03 - AI Content/AI Content-UGC3.mp4",
+    "sha256": "2431177e86b996a43967c230ff80a55f0547a2b1e346980792ec32665290270a",
+    "output": "assets/work/planner-routine",
+    "sourceBytes": 25407417,
+    "webBytes": 2084508
+  },
+  {
+    "source": "03 - AI Content/AI Content-UGC4.mp4",
+    "sha256": "4392c124d99ecb084f825f4d7155a94bf79564f1f340078ab04741325288b1af",
+    "output": "assets/work/planner-fringe",
+    "sourceBytes": 26031381,
+    "webBytes": 1939863
+  },
+  {
+    "source": "03 - AI Content/AI Content-talking head.mp4",
+    "sha256": "44e2a774caa39dd7ce96a4fd609eac406c05e877b9b11119996b526c8bdcdf1b",
+    "output": "assets/work/album-talking-head",
+    "sourceBytes": 32381947,
+    "webBytes": 6733039
+  },
+  {
+    "source": "03 - AI Content/AI Content-voiceover.mp4",
+    "sha256": "8e3b304934b013ac5c9bd289e453a3745f93eda6d064f79ad9e8c69891b1f6d1",
+    "output": "assets/work/chart-voiceover",
+    "sourceBytes": 32352978,
+    "webBytes": 3181068
+  },
+  {
+    "source": "03 - AI Content/Static-Product showcase.png",
+    "output": "assets/work/album-colours/image.webp",
+    "sha256": "c5e49f67a2ca564abf0b70bbf1dc267bbe997579ad11a968925d3c84889fe0ef"
+  },
+  {
+    "source": "03 - AI Content/Static-product showcase1.png",
+    "output": "assets/work/wall-calendar/image.webp",
+    "sha256": "4e3adf5d49ac549418f38075d30010f8d971f4b07731c7e50bbdca628ade2039"
+  },
+  {
+    "source": "03 - AI Content/Static-product showcase2.png",
+    "output": "assets/work/magnetic-calendar/image.webp",
+    "sha256": "f837655fc527d4f727a8358883d70db0740d72cbd44822de0e635265fdcc37f7"
+  },
+  {
+    "source": "02 - Social Content/Carousel-inspiration.jpg",
+    "output": "assets/work/planner-inspiration",
+    "slides": 5,
+    "sha256": "dd28de75ba5fbaa058e4830a6becb71c6dbb46830698fa74ff7084f29f1be893"
+  },
+  {
+    "source": "02 - Social Content/Carousel-inspiration_review.jpg",
+    "output": "assets/work/planner-reviews",
+    "slides": 5,
+    "sha256": "5fb88bb11db2c34eaa09897f77b23c2e75d6a6523f15b0b67dae0a8135ce27a2"
+  },
+  {
+    "source": "03 - AI Content/Carousel-product-led.png",
+    "output": "assets/work/autumn-word-game",
+    "slides": 5,
+    "sha256": "aee8c958a185e12a9a6c05db8c43332ce4a1661fa633105b6ed2a7695218ecbe"
+  },
+  {
+    "source": "03 - AI Content/Carousel-product-led1.png",
+    "output": "assets/work/tidy-up-routine",
+    "slides": 5,
+    "sha256": "a78d52129ca017b8d8185dffe3239ea7dd0b2de262f6a64323256717d131ea4d"
+  }
+]
