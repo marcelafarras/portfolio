@@ -13,6 +13,17 @@ const context = vm.createContext({ document: { querySelectorAll: () => [], getEl
 vm.runInContext(fs.readFileSync(path.join(root, 'content.js'), 'utf8') + '\n' + fs.readFileSync(path.join(root, 'populate.js'), 'utf8'), context);
 const samples = vm.runInContext('SITE.samples', context);
 
+test('brand filters include the matching Smart Panda and String and Space work', () => {
+  for (const [brand, count, example] of [['Smart Panda', 18, 'planner-inspiration'], ['String and Space', 6, 'album-prelaunch']]) {
+    assert.equal(samples.filter(item => item.brand === brand).length, count);
+    assert.equal(samples.find(item => item.id === example).brand, brand);
+    vm.runInContext(`workState.brand = ${JSON.stringify(brand)}; renderSamples('all', 'all')`, context);
+    assert.equal(get('workResults').textContent, count > 12 ? `12 of ${count} samples` : `${count} samples`);
+    assert.ok(get('works-grid').innerHTML.includes(example));
+  }
+  vm.runInContext("workState.brand = 'all'", context);
+});
+
 test('every published work asset exists and carousels contain the complete five-slide sequence', () => {
   assert.equal(samples.length, 29);
   assert.equal(new Set(samples.map(item => item.id)).size, 29);

@@ -123,6 +123,7 @@ const SITE = {
   samples: [
     {
       "id": "album-at-home",
+      "brand": "String and Space",
       "title": "Photo album, a personal story",
       "category": "AI-generated content / UGC-style video",
       "services": [
@@ -139,6 +140,7 @@ const SITE = {
     },
     {
       "id": "album-prelaunch",
+      "brand": "String and Space",
       "title": "A gift for the moments that matter",
       "category": "AI-generated content / Product prelaunch",
       "services": [
@@ -155,6 +157,7 @@ const SITE = {
     },
     {
       "id": "planner-comment-reply",
+      "brand": "Smart Panda",
       "title": "Turn a question into a product story",
       "category": "AI-generated content / UGC-style video",
       "services": [
@@ -171,6 +174,7 @@ const SITE = {
     },
     {
       "id": "autumn-word-game",
+      "brand": "Smart Panda",
       "format": "carousel",
       "title": "Turn a product into an activity",
       "category": "AI-generated visuals / Carousel",
@@ -210,6 +214,7 @@ const SITE = {
     },
     {
       "id": "album-colours",
+      "brand": "String and Space",
       "title": "Five colours, one visual story",
       "category": "AI-generated visuals / Graphic design",
       "services": [
@@ -226,6 +231,7 @@ const SITE = {
     },
     {
       "id": "halloween-characters",
+      "brand": "Smart Panda",
       "title": "A little character goes a long way",
       "category": "AI-generated content / Animation",
       "services": [
@@ -242,6 +248,7 @@ const SITE = {
     },
     {
       "id": "tidy-up-routine",
+      "brand": "Smart Panda",
       "format": "carousel",
       "title": "Make a routine easier to picture",
       "category": "AI-generated visuals / Carousel",
@@ -281,6 +288,7 @@ const SITE = {
     },
     {
       "id": "wall-calendar",
+      "brand": "Smart Panda",
       "title": "A calendar in its everyday setting",
       "category": "AI-generated visuals / Graphic design",
       "services": [
@@ -297,6 +305,7 @@ const SITE = {
     },
     {
       "id": "halloween-skit",
+      "brand": "Smart Panda",
       "title": "A seasonal story, built around the product",
       "category": "AI-generated content / Skit",
       "services": [
@@ -313,6 +322,7 @@ const SITE = {
     },
     {
       "id": "album-talking-head",
+      "brand": "String and Space",
       "title": "A story told straight to camera",
       "category": "AI-generated content / Talking head",
       "services": [
@@ -329,6 +339,7 @@ const SITE = {
     },
     {
       "id": "planner-inspiration",
+      "brand": "Smart Panda",
       "format": "carousel",
       "title": "Find your own way to plan",
       "category": "Social content / Carousel",
@@ -367,6 +378,7 @@ const SITE = {
     },
     {
       "id": "planner-launch",
+      "brand": "Smart Panda",
       "title": "A new year, on paper",
       "category": "AI-generated content / Product launch",
       "services": [
@@ -383,6 +395,7 @@ const SITE = {
     },
     {
       "id": "small-wins",
+      "brand": "Smart Panda",
       "title": "Everyday things, made visible",
       "category": "AI-generated content / Product-led video",
       "services": [
@@ -399,6 +412,7 @@ const SITE = {
     },
     {
       "id": "planner-ugc-ad",
+      "brand": "Smart Panda",
       "title": "A planner pitch in ten seconds",
       "category": "AI-generated content / UGC-style video",
       "services": [
@@ -415,6 +429,7 @@ const SITE = {
     },
     {
       "id": "animated-chart",
+      "brand": "Smart Panda",
       "title": "Make the product the main character",
       "category": "AI-generated content / Animation",
       "services": [
@@ -431,6 +446,7 @@ const SITE = {
     },
     {
       "id": "dancing-character",
+      "brand": "Smart Panda",
       "title": "A product moment with personality",
       "category": "AI-generated content / Character video",
       "services": [
@@ -447,6 +463,7 @@ const SITE = {
     },
     {
       "id": "vampire-skit",
+      "brand": "Smart Panda",
       "title": "A familiar routine, with a twist",
       "category": "AI-generated content / Skit",
       "services": [
@@ -463,6 +480,7 @@ const SITE = {
     },
     {
       "id": "album-outdoors",
+      "brand": "String and Space",
       "title": "Take the photo story outside",
       "category": "AI-generated content / UGC-style video",
       "services": [
@@ -479,6 +497,7 @@ const SITE = {
     },
     {
       "id": "album-fisheye",
+      "brand": "String and Space",
       "title": "A different lens on the same product",
       "category": "AI-generated content / UGC-style video",
       "services": [
@@ -495,6 +514,7 @@ const SITE = {
     },
     {
       "id": "planner-routine",
+      "brand": "Smart Panda",
       "title": "Show the planner in the routine",
       "category": "AI-generated content / UGC-style video",
       "services": [
@@ -511,6 +531,7 @@ const SITE = {
     },
     {
       "id": "planner-fringe",
+      "brand": "Smart Panda",
       "title": "Start with a relatable moment",
       "category": "AI-generated content / UGC-style video",
       "services": [
@@ -527,6 +548,7 @@ const SITE = {
     },
     {
       "id": "chart-voiceover",
+      "brand": "Smart Panda",
       "title": "Let the routine tell the story",
       "category": "AI-generated content / Voiceover",
       "services": [
@@ -543,6 +565,7 @@ const SITE = {
     },
     {
       "id": "magnetic-calendar",
+      "brand": "Smart Panda",
       "title": "Make the product feel at home",
       "category": "AI-generated visuals / Graphic design",
       "services": [
@@ -559,6 +582,7 @@ const SITE = {
     },
     {
       "id": "planner-reviews",
+      "brand": "Smart Panda",
       "format": "carousel",
       "title": "Let product details support the story",
       "category": "Social content / Carousel",
