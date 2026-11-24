@@ -2,7 +2,7 @@
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 const safeUrl = value => /^(https:\/\/|assets\/)/.test(String(value || '')) ? escapeHtml(value) : '';
 const externalLink = (url, label, cls = 'text-link') => `<a class="${cls}" href="${safeUrl(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)} <span aria-hidden="true">↗</span></a>`;
-const workState = { service: 'all', format: 'all', limit: 12 };
+const workState = { service: 'all', format: 'all', brand: 'all', limit: 12 };
 const sampleFormat = item => item.format || (item.videoSrc ? 'video' : 'image');
 
 function renderSamples(service = workState.service, format = workState.format, expand = false) {
@@ -10,7 +10,7 @@ function renderSamples(service = workState.service, format = workState.format, e
   workState.format = format;
   workState.limit = expand ? workState.limit + 12 : 12;
   document.querySelectorAll('#works-grid video').forEach(video => video.pause());
-  const serviceItems = SITE.samples.filter(item => service === 'all' || item.services.includes(service));
+  const serviceItems = SITE.samples.filter(item => (service === 'all' || item.services.includes(service)) && (workState.brand === 'all' || item.brand === workState.brand));
   const items = serviceItems.filter(item => format === 'all' || sampleFormat(item) === format);
   const visibleItems = items.slice(0, workState.limit);
   document.getElementById('works-grid').dataset.count = String(visibleItems.length);
@@ -56,13 +56,14 @@ document.getElementById('workFilters').addEventListener('click', event => {
   const button = event.target.closest('[data-filter]');
   if (button) renderSamples(button.dataset.filter);
 });
+document.getElementById('workBrand').addEventListener('change', event => { workState.brand = event.target.value; renderSamples(); });
 document.getElementById('formatFilters').addEventListener('click', event => {
   const button = event.target.closest('[data-format]');
   if (button) renderSamples(workState.service, button.dataset.format);
 });
 document.querySelectorAll('[data-service-filter]').forEach(link => link.addEventListener('click', () => renderSamples(link.dataset.serviceFilter, 'all')));
 document.querySelectorAll('[data-format-link]').forEach(link => link.addEventListener('click', () => renderSamples('all', link.dataset.formatLink)));
-document.getElementById('resetWork').addEventListener('click', () => renderSamples('all', 'all'));
+document.getElementById('resetWork').addEventListener('click', () => { workState.brand = 'all'; document.getElementById('workBrand').value = 'all'; renderSamples('all', 'all'); });
 document.getElementById('loadMoreWork').addEventListener('click', () => {
   const previousCount = document.querySelectorAll('#works-grid .sample-card').length;
   renderSamples(workState.service, workState.format, true);
